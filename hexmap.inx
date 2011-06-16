@@ -1,0 +1,51 @@
+<inkscape-extension>
+  <_name>Create Hexmap</_name>
+  <id>pelles.effect.hexmap</id>
+  <dependency type="executable" location="extensions">hexmap.py</dependency>
+  <dependency type="executable" location="extensions">inkex.py</dependency>
+  <param name="cols" type="int" _gui-text="Columns" min="1"
+        max="1000">10</param>
+  <param name="rows" type="int" _gui-text="Rows" min="1"
+        max="1000">10</param>
+  <param name="hexsize" type="float" min="0.0"
+        _gui-text
+      ="Hex Size (inches, ignore document size, implies symmetric)"></param>
+  <param name="coordseparator" type="string"
+        _gui-text="Coordinate Separator">.</param>
+  <param name="coordsize" type="float" max="400.0" min="0.1"
+        _gui-text="Coordinate Text Size">18.0</param>
+  <param name="coordyoffset" type="float" max="100.0" min="-100.0"
+        _gui-text="Coordinate Y Offset %">-85.0</param>
+  <param name="coordalphacol" type="boolean"
+        _gui-text="Column Alpha Coordinates">false</param>
+  <param name="coordrevrow" type="boolean"
+        _gui-text="Row Coordinates Reversed">false</param>
+  <param name="coordrowfirst" type="boolean"
+        _gui-text="Row Coordinate First">false</param>
+  <param name="coordzeros" type="boolean"
+        _gui-text="Zero-Padded Coordinates">true</param>
+  <param name="coordrows" type="int" min="1" max="100"
+        _gui-text="Coordinates Every ... Rows">1</param>
+  <param name="halfhexes" type="boolean"
+        _gui-text="Half hexes at top and bottom">false</param>
+  <param name="xshift" type="boolean"
+        _gui-text="Shift grid to side and wrap">false</param>
+  <param name="coordcolstart" type="int" _gui-text="First Col Nr" min="0"
+        max="1000">1</param>
+  <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"
+        max="1000">1</param>
+  <param name="cornersize" type="int" min="0" max="50"
+        _gui-text="Size of corners (%)">10</param>
+  <param name="symmetric" type="boolean"
+        _gui-text="Force Symmetric Hexes">true</param>
+  <param name="log" type="string" _gui-text="Log File (optional)"></param>
+  <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+       <submenu _name="Boardgames"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command reldir="extensions" interpreter="python">hexmap.py</command>
+  </script>
+</inkscape-extension>
