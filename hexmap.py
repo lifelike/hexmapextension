@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import inkex
+import sys
 from inkex import NSS
 import math
 import lxml
@@ -65,6 +66,11 @@ class HexmapEffect(inkex.Effect):
                                      action = 'store',
                                      type = 'int', dest = 'coordrowstart',
                                      default = '1')
+        self.OptionParser.add_option('-b', '--bricks',
+                                     action = 'store',
+                                     type = 'string',
+                                     dest = 'bricks',
+                                     default = False)
         self.OptionParser.add_option('-C', '--coordseparator',
                                      action = 'store',
                                      default = '',
@@ -192,6 +198,7 @@ class HexmapEffect(inkex.Effect):
         rows = self.options.rows
         halves = self.options.halfhexes == "true"
         xshift = self.options.xshift == "true"
+        bricks = self.options.bricks == "true"
 
         self.coordseparator = self.options.coordseparator
         if self.coordseparator == None:
@@ -293,6 +300,8 @@ class HexmapEffect(inkex.Effect):
                 y = [cy - hex_height * 0.5,
                      cy,
                      cy + hex_height * 0.5]
+                if bricks and xshift:
+                    sys.exit('No support for bricks with x shift.')
                 if xshift and col == 0:
                     x[0] = cx
                     x[1] = cx
@@ -301,12 +310,18 @@ class HexmapEffect(inkex.Effect):
                     x[3] = cx
                 if halves and (col % 2) == 1 and row == rows-1:
                     y[2] = cy
-                p = [Point(x[2], y[0]),
-                     Point(x[3], y[1]),
-                     Point(x[2], y[2]),
-                     Point(x[1], y[2]),
-                     Point(x[0], y[1]),
-                     Point(x[1], y[0])]
+                # with bricks pattern, shift some coordinates a bit
+                # to make correct shape
+                if bricks:
+                    brick_adjust = hex_width * 0.125
+                else:
+                    brick_adjust = 0
+                p = [Point(x[2] + brick_adjust, y[0]),
+                     Point(x[3] - brick_adjust, y[1]),
+                     Point(x[2] + brick_adjust, y[2]),
+                     Point(x[1] - brick_adjust, y[2]),
+                     Point(x[0] + brick_adjust, y[1]),
+                     Point(x[1] - brick_adjust, y[0])]
                 if (col < cols or xshift) and row < rows:
                     if row < rows or (halves and (col % 2) == 1):
                         sp = self.svg_polygon(p)
