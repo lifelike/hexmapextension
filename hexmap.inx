@@ -12,6 +12,8 @@
       ="Hex Size (inches, ignore document size, implies symmetric)"></param>
   <param name="bricks" type="boolean"
         _gui-text="Bricks">false</param>
+  <param name="rotate" type="boolean"
+        _gui-text="Rotate">false</param>
   <param name="coordseparator" type="string"
         _gui-text="Coordinate Separator">.</param>
   <param name="coordsize" type="float" max="400.0" min="0.1"

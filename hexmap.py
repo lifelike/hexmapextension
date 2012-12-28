@@ -27,6 +27,9 @@ class Point:
     def __mul__(self, k):
         return Point(self.x * k, self.y * k)
 
+    def rotated(self, total_width):
+        return Point(self.y, total_width - self.x)
+
 def nrdigits(f):
     return int(math.floor(math.log10(f))) + 1
 
@@ -70,6 +73,11 @@ class HexmapEffect(inkex.Effect):
                                      action = 'store',
                                      type = 'string',
                                      dest = 'bricks',
+                                     default = False)
+        self.OptionParser.add_option('-t', '--rotate',
+                                     action = 'store',
+                                     type = 'string',
+                                     dest = 'rotate',
                                      default = False)
         self.OptionParser.add_option('-C', '--coordseparator',
                                      action = 'store',
@@ -147,11 +155,14 @@ class HexmapEffect(inkex.Effect):
         return poly
 
     def svg_coord(self, p, col, row, cols, rows):
-        col = col + 1
         if self.coordrevrow:
             row = rows - row
         else:
             row = row + 1
+        if self.coordrevcol:
+            col = cols - col
+        else:
+            col = col + 1
         row = row + self.options.coordrowstart - 1
         col = col + self.options.coordcolstart - 1
         if ((row != 1 and row % self.coordrows != 0)
@@ -199,16 +210,23 @@ class HexmapEffect(inkex.Effect):
         halves = self.options.halfhexes == "true"
         xshift = self.options.xshift == "true"
         bricks = self.options.bricks == "true"
+        rotate = self.options.rotate == "true"
 
         self.coordseparator = self.options.coordseparator
         if self.coordseparator == None:
             self.coordseparator = ""
         self.coordrevrow = self.options.coordrevrow == "true"
+        self.coordrevcol = False
         self.coordalphacol = self.options.coordalphacol == "true"
         self.coordrows = self.options.coordrows
         self.coordsize = self.options.coordsize
         self.coordrowfirst = self.options.coordrowfirst == "true"
         self.coordzeros = self.options.coordzeros == "true"
+
+        if rotate:
+            self.coordrowfirst = not self.coordrowfirst
+            self.coordrevcol = not self.coordrevrow
+            self.coordrevrow = False
 
         self.cornersize = self.options.cornersize / 100.0
         self.logwrite("cornersize: %f\n" % self.cornersize)
@@ -262,6 +280,7 @@ class HexmapEffect(inkex.Effect):
             hex_height = height / hex_rows
 
         hexes_height = hex_height * hex_rows
+        hexes_width = hex_width * 0.75 * cols + hex_width * 0.25
 
         self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
                                                           hex_height))
@@ -277,22 +296,24 @@ class HexmapEffect(inkex.Effect):
                 self.logwrite("col: %d, row: %d, c: %f %f\n" % (col, row,
                                                                 cx, cy))
                 c = Point(cx, cy)
+                if rotate:
+                    c = c.rotated(hexes_width)
                 if (col < cols and row < rows
                     and not (col == 0 and xshift)
                     and not (col % 2 == 1
                              and row == rows-1
                              and halves
                              and self.options.coordyoffset < 0)):
-                    cc = Point(cx, cy + yoffset)
+                    cc = c + Point(0, yoffset)
                     coord = self.svg_coord(cc, col, row, cols, rows)
                     if coord != None:
                         hexcoords.append(coord)
                 if col < cols and row < rows and not (xshift and col == 0):
-                     cd = self.svg_circle(c, 2)
-                     cd.set('id', "hexcenter_%d_%d"
-                            % (col + self.options.coordcolstart,
-                            row + self.options.coordrowstart))
-                     hexdots.append(cd)
+                    cd = self.svg_circle(c, 2)
+                    cd.set('id', "hexcenter_%d_%d"
+                           % (col + self.options.coordcolstart,
+                              row + self.options.coordrowstart))
+                    hexdots.append(cd)
                 x = [cx - hex_width * 0.5,
                      cx - hex_width * 0.25,
                      cx + hex_width * 0.25,
@@ -322,6 +343,8 @@ class HexmapEffect(inkex.Effect):
                      Point(x[1] - brick_adjust, y[2]),
                      Point(x[0] + brick_adjust, y[1]),
                      Point(x[1] - brick_adjust, y[0])]
+                if rotate:
+                    p = [point.rotated(hexes_width) for point in p]
                 if (col < cols or xshift) and row < rows:
                     if row < rows or (halves and (col % 2) == 1):
                         sp = self.svg_polygon(p)
