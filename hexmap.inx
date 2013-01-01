@@ -34,6 +34,8 @@
         _gui-text="Half hexes at top and bottom">false</param>
   <param name="xshift" type="boolean"
         _gui-text="Shift grid to side and wrap">false</param>
+  <param name="firstcoldown" type="boolean"
+        _gui-text="First column half-hex down.">false</param>
   <param name="coordcolstart" type="int" _gui-text="First Col Nr" min="0"
         max="1000">1</param>
   <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"

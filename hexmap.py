@@ -106,6 +106,9 @@ class HexmapEffect(inkex.Effect):
         self.OptionParser.add_option('-X', '--xshift', action = 'store',
                                      dest = 'xshift', default = False,
                                      help = "Shift grid half hex and wrap.")
+        self.OptionParser.add_option('-f', '--firstcoldown', action = 'store',
+                                     dest = 'firstcoldown', default = False,
+                                     help = "Make first column half-hex down.")
         self.OptionParser.add_option('-H', '--halfhexes', action = 'store',
                                      dest = 'halfhexes', default = False)
         self.OptionParser.add_option('-Q', '--cornersize', action = 'store',
@@ -209,6 +212,7 @@ class HexmapEffect(inkex.Effect):
         rows = self.options.rows
         halves = self.options.halfhexes == "true"
         xshift = self.options.xshift == "true"
+        firstcoldown = self.options.firstcoldown == "true"
         bricks = self.options.bricks == "true"
         rotate = self.options.rotate == "true"
 
@@ -291,8 +295,11 @@ class HexmapEffect(inkex.Effect):
             cx = (2.0 + col * 3.0) * 0.25 * hex_width
             if xshift:
                 cx = cx - hex_width * 0.5
+            coldown = col % 2
+            if firstcoldown:
+                coldown = not coldown
             for row in xrange(rows + 1):
-                cy = (0.5 + (col % 2) * 0.5 + row) * hex_height
+                cy = (0.5 + coldown * 0.5 + row) * hex_height
                 self.logwrite("col: %d, row: %d, c: %f %f\n" % (col, row,
                                                                 cx, cy))
                 c = Point(cx, cy)
@@ -300,7 +307,7 @@ class HexmapEffect(inkex.Effect):
                     c = c.rotated(hexes_width)
                 if (col < cols and row < rows
                     and not (col == 0 and xshift)
-                    and not (col % 2 == 1
+                    and not (coldown
                              and row == rows-1
                              and halves
                              and self.options.coordyoffset < 0)):
@@ -329,7 +336,7 @@ class HexmapEffect(inkex.Effect):
                 elif xshift and col == cols:
                     x[2] = cx
                     x[3] = cx
-                if halves and (col % 2) == 1 and row == rows-1:
+                if halves and coldown and row == rows-1:
                     y[2] = cy
                 # with bricks pattern, shift some coordinates a bit
                 # to make correct shape
@@ -346,9 +353,9 @@ class HexmapEffect(inkex.Effect):
                 if rotate:
                     p = [point.rotated(hexes_width) for point in p]
                 if (col < cols or xshift) and row < rows:
-                    if row < rows or (halves and (col % 2) == 1):
+                    if row < rows or (halves and coldown):
                         sp = self.svg_polygon(p)
-                    if halves and (col % 2) == 1 and row == rows - 1:
+                    if halves and coldown and row == rows - 1:
                         p2 = [x.y_mirror(hexes_height) for x in p]
                         sp = self.svg_polygon(p)
                     sp.set('id', "hexfill_%d_%d"
@@ -356,27 +363,27 @@ class HexmapEffect(inkex.Effect):
                               row + self.options.coordrowstart))
                     hexfill.append(sp)
                 if ((col < cols and (not halves or row < rows
-                                     or (col % 2) == 0))
+                                     or not coldown))
                     or (xshift and col == cols
                         and not (halves and row == rows))):
                     self.add_hexline(hexgrid, hexcorners, p[5], p[0])
                     self.logwrite("line 0-5\n")
                 if row < rows:
-                    if ((cols % 2 == 1 or row > 0 or col < cols
+                    if ((coldown or row > 0 or col < cols
                          or halves or xshift)
                         and not (xshift and col == 0)):
                         self.add_hexline(hexgrid, hexcorners, p[5], p[4])
                         self.logwrite("line 4-5\n")
-                    if col % 2 == 0 and row == 0 and col < cols:
+                    if not coldown and row == 0 and col < cols:
                         self.add_hexline(hexgrid, hexcorners, p[0], p[1])
                         self.logwrite("line 0-1\n")
-                    if not (halves and col % 2 == 1 and row == rows-1):
+                    if not (halves and coldown and row == rows-1):
                         if (not (xshift and col == 0)
                             and not (not xshift and col == cols
-                                     and row == rows-1 and cols % 2 == 1)):
+                                     and row == rows-1 and coldown)):
                             self.add_hexline(hexgrid, hexcorners, p[4], p[3])
                             self.logwrite("line 3-4\n")
-                        if col % 2 == 1 and row == rows - 1 and col < cols:
+                        if coldown and row == rows - 1 and col < cols:
                             self.add_hexline(hexgrid, hexcorners, p[1], p[2])
                             self.logwrite("line 1-2\n")
 
