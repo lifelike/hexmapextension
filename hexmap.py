@@ -150,7 +150,7 @@ class HexmapEffect(inkex.Effect):
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
         return poly
 
-    def svg_coord(self, p, col, row, cols, rows):
+    def svg_coord(self, p, col, row, cols, rows, anchor='middle'):
         if self.coordrevrow:
             row = rows - row
         else:
@@ -187,8 +187,8 @@ class HexmapEffect(inkex.Effect):
 #        value = self.document.createTextNode(coord)
         text.set('x', str(p.x))
         text.set('y', str(p.y))
-        style = ("text-align:center;text-anchor:middle;font-size:%fpt"
-                 % self.coordsize)
+        style = ("text-align:center;text-anchor:%s;font-size:%fpt"
+                 % (anchor, self.coordsize))
         text.set('style', style)
         text.text = coord
 #        text.appendChild(value)
@@ -303,7 +303,12 @@ class HexmapEffect(inkex.Effect):
                     c = c.rotated(hexes_width)
                 if (col < cols or xshift) and row < rows:
                     cc = c + Point(0, yoffset)
-                    coord = self.svg_coord(cc, col, row, cols, rows)
+                    anchor = 'middle'
+                    if xshift and col == 0:
+                        anchor = 'start'
+                    elif xshift and col == cols:
+                        anchor = 'end'
+                    coord = self.svg_coord(cc, col, row, cols, rows, anchor)
                     if coord != None:
                         hexcoords.append(coord)
                 if (col < cols or xshift) and row < rows:
