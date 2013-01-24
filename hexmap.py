@@ -301,17 +301,12 @@ class HexmapEffect(inkex.Effect):
                 c = Point(cx, cy)
                 if rotate:
                     c = c.rotated(hexes_width)
-                if (col < cols and row < rows
-                    and not (col == 0 and xshift)
-                    and not (coldown
-                             and row == rows-1
-                             and halves
-                             and self.options.coordyoffset < 0)):
+                if (col < cols or xshift) and row < rows:
                     cc = c + Point(0, yoffset)
                     coord = self.svg_coord(cc, col, row, cols, rows)
                     if coord != None:
                         hexcoords.append(coord)
-                if col < cols and row < rows and not (xshift and col == 0):
+                if (col < cols or xshift) and row < rows:
                     cd = self.svg_circle(c, self.centerdotsize)
                     cd.set('id', "hexcenter_%d_%d"
                            % (col + self.options.coordcolstart,
