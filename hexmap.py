@@ -41,6 +41,10 @@ def alphacol(c):
 def calc_hex_height(hex_width):
     return 0.25 * hex_width / math.tan(math.pi / 6) * 2
 
+COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
+COORD_YOFFSET_PART = 75
+CENTERDOT_SIZE_PART_OF_HEX_HEIGHT = 0.02
+
 class HexmapEffect(inkex.Effect):
     def __init__(self):
         inkex.Effect.__init__(self)
@@ -84,14 +88,6 @@ class HexmapEffect(inkex.Effect):
                                      default = '',
                                      type = 'string',
                                      dest = 'coordseparator')
-        self.OptionParser.add_option('-S', '--coordsize',
-                                     action = 'store',
-                                     type = 'float', dest = 'coordsize',
-                                     default = 18.0)
-        self.OptionParser.add_option('-Y', '--coordyoffset',
-                                     action = 'store',
-                                     type = 'float', dest = 'coordyoffset',
-                                     default = 85.0)
         self.OptionParser.add_option('-A', '--coordalphacol', action = 'store',
                                      dest = 'coordalphacol', default = False,
                                      help = "Reverse row coordinates.")
@@ -114,9 +110,6 @@ class HexmapEffect(inkex.Effect):
         self.OptionParser.add_option('-Q', '--cornersize', action = 'store',
                                      dest = 'cornersize', default = 1,
                                      type = 'int')
-        self.OptionParser.add_option('-y', '--symmetric',
-                                     action = 'store',
-                                     dest = 'symmetric', default = False)
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -194,7 +187,7 @@ class HexmapEffect(inkex.Effect):
 #        value = self.document.createTextNode(coord)
         text.set('x', str(p.x))
         text.set('y', str(p.y))
-        style = ("text-align:center;text-anchor:middle;font-size:%f"
+        style = ("text-align:center;text-anchor:middle;font-size:%fpt"
                  % self.coordsize)
         text.set('style', style)
         text.text = coord
@@ -223,7 +216,6 @@ class HexmapEffect(inkex.Effect):
         self.coordrevcol = False
         self.coordalphacol = self.options.coordalphacol == "true"
         self.coordrows = self.options.coordrows
-        self.coordsize = self.options.coordsize
         self.coordrowfirst = self.options.coordrowfirst == "true"
         self.coordzeros = self.options.coordzeros == "true"
 
@@ -278,18 +270,22 @@ class HexmapEffect(inkex.Effect):
         if self.options.hexsize and self.options.hexsize > 0.1:
             hex_width = self.options.hexsize * 90
             hex_height = calc_hex_height(hex_width)
-        elif self.options.symmetric == "true":
-            hex_height = calc_hex_height(hex_width)
         else:
-            hex_height = height / hex_rows
+            hex_height = calc_hex_height(hex_width)
 
         hexes_height = hex_height * hex_rows
         hexes_width = hex_width * 0.75 * cols + hex_width * 0.25
 
+        self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
+        if self.coordsize > 1.0:
+            self.coordsize = round(self.coordsize)
+        self.centerdotsize = hex_height * CENTERDOT_SIZE_PART_OF_HEX_HEIGHT
+
         self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
                                                           hex_height))
 
-        yoffset = -self.options.coordyoffset * hex_height * 0.005
+        # FIXME try to remember what 0.005 is for
+        yoffset = COORD_YOFFSET_PART * hex_height * 0.005
 
         for col in xrange(cols + 1):
             cx = (2.0 + col * 3.0) * 0.25 * hex_width
@@ -316,7 +312,7 @@ class HexmapEffect(inkex.Effect):
                     if coord != None:
                         hexcoords.append(coord)
                 if col < cols and row < rows and not (xshift and col == 0):
-                    cd = self.svg_circle(c, 2)
+                    cd = self.svg_circle(c, self.centerdotsize)
                     cd.set('id', "hexcenter_%d_%d"
                            % (col + self.options.coordcolstart,
                               row + self.options.coordrowstart))

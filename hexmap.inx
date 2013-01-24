@@ -9,17 +9,13 @@
         max="1000">10</param>
   <param name="hexsize" type="float" min="0.0"
         _gui-text
-      ="Hex Size (inches, ignore document size, implies symmetric)"></param>
+      ="Hex Size (inches, ignore document size)"></param>
   <param name="bricks" type="boolean"
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
   <param name="coordseparator" type="string"
         _gui-text="Coordinate Separator">.</param>
-  <param name="coordsize" type="float" max="400.0" min="0.1"
-        _gui-text="Coordinate Text Size">18.0</param>
-  <param name="coordyoffset" type="float" max="100.0" min="-100.0"
-        _gui-text="Coordinate Y Offset %">-85.0</param>
   <param name="coordalphacol" type="boolean"
         _gui-text="Column Alpha Coordinates">false</param>
   <param name="coordrevrow" type="boolean"
@@ -42,8 +38,6 @@
         max="1000">1</param>
   <param name="cornersize" type="int" min="0" max="50"
         _gui-text="Size of corners (%)">10</param>
-  <param name="symmetric" type="boolean"
-        _gui-text="Force Symmetric Hexes">true</param>
   <param name="log" type="string" _gui-text="Log File (optional)"></param>
   <effect>
     <object-type>all</object-type>
