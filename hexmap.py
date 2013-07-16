@@ -107,9 +107,14 @@ class HexmapEffect(inkex.Effect):
                                      help = "Make first column half-hex down.")
         self.OptionParser.add_option('-H', '--halfhexes', action = 'store',
                                      dest = 'halfhexes', default = False)
-        self.OptionParser.add_option('-Q', '--cornersize', action = 'store',
-                                     dest = 'cornersize', default = 1,
+        self.OptionParser.add_option('-Q', '--verticesize',
+                                     action = 'store',
+                                     dest = 'verticesize', default = 1,
                                      type = 'int')
+        self.OptionParser.add_option('--layer-centerdots', default = False,
+                                     dest = 'centerdots', action = 'store')
+        self.OptionParser.add_option('--layer-vertices', default = False,
+                                     dest = 'vertices', action = 'store')
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -194,11 +199,13 @@ class HexmapEffect(inkex.Effect):
 #        text.appendChild(value)
         return text
 
-    def add_hexline(self, gridlayer, cornerlayer, p1, p2):
+    def add_hexline(self, gridlayer, verticelayer, p1, p2):
         gridlayer.append(self.svg_line(p1, p2))
-        cornerlayer.append(self.svg_line(p1, (p2 - p1) * self.cornersize + p1))
-        cornerlayer.append(self.svg_line(p2 - (p2 - p1) * self.cornersize, p2))
-        #cornerlayer.append(self.svg_circle(p1, 4))
+        verticelayer.append(self.svg_line(p1, (p2 - p1)
+                                          * self.verticesize + p1))
+        verticelayer.append(self.svg_line(p2 - (p2 - p1)
+                                          * self.verticesize, p2))
+        #verticelayer.append(self.svg_circle(p1, 4))
 
     def effect(self):
         cols = self.options.cols
@@ -219,16 +226,22 @@ class HexmapEffect(inkex.Effect):
         self.coordrowfirst = self.options.coordrowfirst == "true"
         self.coordzeros = self.options.coordzeros == "true"
 
+        self.optionallayers = set()
+        if self.options.centerdots == 'true':
+            self.optionallayers.add('centerdots')
+        if self.options.vertices == 'true':
+            self.optionallayers.add('vertices')
+
         if rotate:
             self.coordrowfirst = not self.coordrowfirst
             self.coordrevcol = not self.coordrevrow
             self.coordrevrow = False
 
-        self.cornersize = self.options.cornersize / 100.0
-        self.logwrite("cornersize: %f\n" % self.cornersize)
-        if self.cornersize < 0.01 or self.cornersize > 0.5:
-            self.logwrite("cornersize out of range\n")
-            self.cornersize = 0.15
+        self.verticesize = self.options.verticesize / 100.0
+        self.logwrite("verticesize: %f\n" % self.verticesize)
+        if self.verticesize < 0.01 or self.verticesize > 0.5:
+            self.logwrite("verticesize out of range\n")
+            self.verticesize = 0.15
 
         self.coldigits = nrdigits(cols + self.options.coordcolstart)
         self.rowdigits = nrdigits(rows + self.options.coordrowstart)
@@ -247,11 +260,14 @@ class HexmapEffect(inkex.Effect):
         height = float(inkex.unittouu(svg.get('height')))
 
         hexgrid = self.createLayer("Hex Grid")
-        hexdots = self.createLayer("Hex Centerdots")
-        hexcorners = self.createLayer("Hex Corners")
-        hexcorners.set("style", "display:none")
+        if 'centerdots' in self.optionallayers:
+            hexdots = self.createLayer("Hex Centerdots")
+        hexvertices = self.createLayer("Hex Vertices")
         hexfill = self.createLayer("Hex Fill")
         hexcoords = self.createLayer("Hex Coordinates")
+
+        if 'vertices' in self.optionallayers:
+            hexgrid.set("style", "display:none")
 
         self.logwrite("w, h : %f, %f\n" % (width, height))
 
@@ -311,7 +327,8 @@ class HexmapEffect(inkex.Effect):
                     coord = self.svg_coord(cc, col, row, cols, rows, anchor)
                     if coord != None:
                         hexcoords.append(coord)
-                if (col < cols or xshift) and row < rows:
+                if ((col < cols or xshift) and row < rows
+                    and 'centerdots' in self.optionallayers):
                     cd = self.svg_circle(c, self.centerdotsize)
                     cd.set('id', "hexcenter_%d_%d"
                            % (col + self.options.coordcolstart,
@@ -362,33 +379,35 @@ class HexmapEffect(inkex.Effect):
                                      or not coldown))
                     or (xshift and col == cols
                         and not (halves and row == rows))):
-                    self.add_hexline(hexgrid, hexcorners, p[5], p[0])
+                    self.add_hexline(hexgrid, hexvertices, p[5], p[0])
                     self.logwrite("line 0-5\n")
                 if row < rows:
                     if ((coldown or row > 0 or col < cols
                          or halves or xshift)
                         and not (xshift and col == 0)):
-                        self.add_hexline(hexgrid, hexcorners, p[5], p[4])
+                        self.add_hexline(hexgrid, hexvertices, p[5], p[4])
                         self.logwrite("line 4-5\n")
                     if not coldown and row == 0 and col < cols:
-                        self.add_hexline(hexgrid, hexcorners, p[0], p[1])
+                        self.add_hexline(hexgrid, hexvertices, p[0], p[1])
                         self.logwrite("line 0-1\n")
                     if not (halves and coldown and row == rows-1):
                         if (not (xshift and col == 0)
                             and not (not xshift and col == cols
                                      and row == rows-1 and coldown)):
-                            self.add_hexline(hexgrid, hexcorners, p[4], p[3])
+                            self.add_hexline(hexgrid, hexvertices, p[4], p[3])
                             self.logwrite("line 3-4\n")
                         if coldown and row == rows - 1 and col < cols:
-                            self.add_hexline(hexgrid, hexcorners, p[1], p[2])
+                            self.add_hexline(hexgrid, hexvertices, p[1], p[2])
                             self.logwrite("line 1-2\n")
 
         # fixme - don't waste cpu generating layers that already exist...
         self.append_if_new_name(svg, hexfill)
         self.append_if_new_name(svg, hexgrid)
-        self.append_if_new_name(svg, hexcorners)
+        if 'vertices' in self.optionallayers:
+            self.append_if_new_name(svg, hexvertices)
         self.append_if_new_name(svg, hexcoords)
-        self.append_if_new_name(svg, hexdots)
+        if 'centerdots' in self.optionallayers:
+            self.append_if_new_name(svg, hexdots)
 
     def append_if_new_name(self, svg, layer):
         name = layer.get(inkex.addNS('label', 'inkscape'))

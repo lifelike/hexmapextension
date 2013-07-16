@@ -37,8 +37,12 @@
         max="1000">1</param>
   <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"
         max="1000">1</param>
-  <param name="cornersize" type="int" min="0" max="50"
-        _gui-text="Size of corners (%)">10</param>
+  <param name="verticesize" type="int" min="0" max="50"
+        _gui-text="Size of vertices (%)">10</param>
+  <param name="layer-centerdots" type="boolean"
+         _gui-text="Include Centerdots Layer">true</param>
+  <param name="layer-vertices" type="boolean"
+         _gui-text="Include Vertices Layer">false</param>
   <param name="log" type="string" _gui-text="Log File (optional)"></param>
   <effect>
     <object-type>all</object-type>
