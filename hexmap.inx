@@ -43,6 +43,8 @@
          _gui-text="Include Centerdots Layer">true</param>
   <param name="layer-vertices" type="boolean"
          _gui-text="Include Vertices Layer">false</param>
+  <param name="layer-ellipses" type="boolean"
+         _gui-text="Include Ellipses Layer">false</param>
   <param name="log" type="string" _gui-text="Log File (optional)"></param>
   <effect>
     <object-type>all</object-type>

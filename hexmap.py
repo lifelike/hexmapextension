@@ -115,6 +115,8 @@ class HexmapEffect(inkex.Effect):
                                      dest = 'centerdots', action = 'store')
         self.OptionParser.add_option('--layer-vertices', default = False,
                                      dest = 'vertices', action = 'store')
+        self.OptionParser.add_option('--layer-ellipses', default = False,
+                                     dest = 'ellipses', action = 'store')
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -144,6 +146,15 @@ class HexmapEffect(inkex.Effect):
         circle.set("r", str(radius))
         circle.set("fill", "black")
         return circle
+
+    def svg_ellipse(self, p, rx, ry):
+        ellipse = etree.Element("ellipse")
+        ellipse.set("cx", str(p.x))
+        ellipse.set("cy", str(p.y))
+        ellipse.set("rx", str(rx))
+        ellipse.set("ry", str(ry))
+        ellipse.set("fill", "#777")
+        return ellipse
 
     def svg_polygon(self, points):
         poly = etree.Element("polygon")
@@ -231,6 +242,8 @@ class HexmapEffect(inkex.Effect):
             self.optionallayers.add('centerdots')
         if self.options.vertices == 'true':
             self.optionallayers.add('vertices')
+        if self.options.ellipses == 'true':
+            self.optionallayers.add('ellipses')
 
         if rotate:
             self.coordrowfirst = not self.coordrowfirst
@@ -265,6 +278,7 @@ class HexmapEffect(inkex.Effect):
         hexvertices = self.createLayer("Hex Vertices")
         hexfill = self.createLayer("Hex Fill")
         hexcoords = self.createLayer("Hex Coordinates")
+        hexellipses = self.createLayer("Hex Ellipses")
 
         if 'vertices' in self.optionallayers:
             hexgrid.set("style", "display:none")
@@ -296,6 +310,8 @@ class HexmapEffect(inkex.Effect):
         if self.coordsize > 1.0:
             self.coordsize = round(self.coordsize)
         self.centerdotsize = hex_height * CENTERDOT_SIZE_PART_OF_HEX_HEIGHT
+        self.ellipserx = hex_width / 2
+        self.ellipsery = hex_height / 2
 
         self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
                                                           hex_height))
@@ -334,6 +350,14 @@ class HexmapEffect(inkex.Effect):
                            % (col + self.options.coordcolstart,
                               row + self.options.coordrowstart))
                     hexdots.append(cd)
+                #FIXME make half-ellipses in half hexes
+                if ((col < cols or xshift) and row < rows
+                    and 'ellipses' in self.optionallayers):
+                    el = self.svg_ellipse(c, self.ellipserx, self.ellipsery)
+                    el.set('id', "hexellipse_%d_%d"
+                           % (col + self.options.coordcolstart,
+                              row + self.options.coordrowstart))
+                    hexellipses.append(el)
                 x = [cx - hex_width * 0.5,
                      cx - hex_width * 0.25,
                      cx + hex_width * 0.25,
@@ -402,6 +426,8 @@ class HexmapEffect(inkex.Effect):
 
         # fixme - don't waste cpu generating layers that already exist...
         self.append_if_new_name(svg, hexfill)
+        if 'ellipses' in self.optionallayers:
+            self.append_if_new_name(svg, hexellipses)
         self.append_if_new_name(svg, hexgrid)
         if 'vertices' in self.optionallayers:
             self.append_if_new_name(svg, hexvertices)
