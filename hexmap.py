@@ -48,6 +48,9 @@ CENTERDOT_SIZE_PART_OF_HEX_HEIGHT = 0.02
 class HexmapEffect(inkex.Effect):
     def __init__(self):
         inkex.Effect.__init__(self)
+        # quick attempt compatibility with Inkscape older than 0.91:
+        if not hasattr(self, 'unittouu'):
+            self.unittouu = inkex.unittouu
         self.log = False
         self.OptionParser.add_option('-l', '--log', action = 'store',
                                      type = 'string', dest = 'logfile')
@@ -243,8 +246,8 @@ class HexmapEffect(inkex.Effect):
         self.logwrite("xshift: %s, halves: %s\n" % (str(xshift), str(halves)))
 
         svg = self.document.xpath('//svg:svg' , namespaces=NSS)[0]
-        width = float(inkex.unittouu(svg.get('width')))
-        height = float(inkex.unittouu(svg.get('height')))
+        width = float(self.unittouu(svg.get('width')))
+        height = float(self.unittouu(svg.get('height')))
 
         hexgrid = self.createLayer("Hex Grid")
         hexdots = self.createLayer("Hex Centerdots")
