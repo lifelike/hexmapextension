@@ -140,7 +140,7 @@ class HexmapEffect(inkex.Effect):
         line.set("x2", str(p2.x))
         line.set("y2", str(p2.y))
         line.set("stroke", "black")
-	line.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
+        line.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
         return line
 
     def svg_circle(self, p, radius):
@@ -159,7 +159,7 @@ class HexmapEffect(inkex.Effect):
         pointsdef = " ".join(pointsdefa)
         poly.set("points", pointsdef)
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
-	poly.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
+        poly.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
         return poly
 
     def svg_coord(self, p, col, row, cols, rows, anchor='middle'):
