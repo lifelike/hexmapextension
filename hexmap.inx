@@ -1,9 +1,14 @@
-<inkscape-extension>
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
   <_name>Create Hexmap</_name>
   <id>pelles.effect.hexmap</id>
   <dependency type="executable" location="extensions">hexmap.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
-  <param name="cols" type="int" _gui-text="Columns" min="1"
+
+<param name="tab" type="notebook">
+
+<page name="page_1" gui-text="Size">
+<param name="cols" type="int" _gui-text="Columns" min="1"
         max="1000">10</param>
   <param name="rows" type="int" _gui-text="Rows" min="1"
         max="1000">10</param>
@@ -11,10 +16,16 @@
       precision="3"
         _gui-text
       ="Hex Size (inches, ignore document size)"></param>
+</page>
+
+<page name="page_1" gui-text="Style">
   <param name="bricks" type="boolean"
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
+</page>
+
+<page name="page_1" gui-text="Coords">
   <param name="coordseparator" type="string"
         _gui-text="Coordinate Separator">.</param>
   <param name="coordalphacol" type="boolean"
@@ -37,10 +48,32 @@
         max="1000">1</param>
   <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"
         max="1000">1</param>
-  <param name="cornersize" type="int" min="0" max="50"
-        _gui-text="Size of corners (%)">10</param>
-  <param name="log" type="string" _gui-text="Log File (optional)"></param>
-  <effect>
+  <param name="verticesize" type="int" min="0" max="50"
+        _gui-text="Size of vertices (%)">10</param>
+</page>
+
+<page name="page_1" gui-text="Layers">
+  <param name="layer-grid" type="boolean"
+         _gui-text="Grid">true</param>
+  <param name="layer-fill" type="boolean"
+         _gui-text="Fill">true</param>
+  <param name="layer-coordinates" type="boolean"
+         _gui-text="Coordinates">true</param>
+  <param name="layer-centerdots" type="boolean"
+         _gui-text="Centerdots">true</param>
+  <param name="layer-vertices" type="boolean"
+         _gui-text="Vertices">false</param>
+  <param name="layer-circles" type="boolean"
+         _gui-text="Circles">false</param>
+</page>
+
+<page name="page_1" gui-text="Debug">
+    <param name="log" type="string" _gui-text="Log File (optional)"></param>
+</page>
+
+</param>
+
+<effect>
     <object-type>all</object-type>
     <effects-menu>
        <submenu _name="Boardgames"/>
