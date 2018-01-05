@@ -41,9 +41,6 @@ def cr(c, r):
 tests = {
     "simple_1x1" : cr(1, 1) + DEFAULT_LAYERS,
     "all_layers_1x1" : cr(1, 1) + ALL_LAYERS,
-
-# not used because it is so slow and requires 14 MB expected file
-    #    "huge_200x200" : cr(200, 200) + ["--layer-grid=true"],
     }
 
 successes = 0
