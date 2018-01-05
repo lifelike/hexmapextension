@@ -48,6 +48,9 @@ CENTERDOT_SIZE_PART_OF_HEX_HEIGHT = 0.02
 class HexmapEffect(inkex.Effect):
     def __init__(self):
         inkex.Effect.__init__(self)
+        # quick attempt compatibility with Inkscape older than 0.91:
+        if not hasattr(self, 'unittouu'):
+            self.unittouu = inkex.unittouu
         self.log = False
         self.OptionParser.add_option('-l', '--log', action = 'store',
                                      type = 'string', dest = 'logfile')
@@ -137,6 +140,7 @@ class HexmapEffect(inkex.Effect):
         line.set("x2", str(p2.x))
         line.set("y2", str(p2.y))
         line.set("stroke", "black")
+	line.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
         return line
 
     def svg_circle(self, p, radius):
@@ -155,6 +159,7 @@ class HexmapEffect(inkex.Effect):
         pointsdef = " ".join(pointsdefa)
         poly.set("points", pointsdef)
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
+	poly.set("stroke-width", str(self.unittouu("%fin" % (1 / 90.0))))
         return poly
 
     def svg_coord(self, p, col, row, cols, rows, anchor='middle'):
@@ -260,8 +265,8 @@ class HexmapEffect(inkex.Effect):
         self.logwrite("xshift: %s, halves: %s\n" % (str(xshift), str(halves)))
 
         svg = self.document.xpath('//svg:svg' , namespaces=NSS)[0]
-        width = float(inkex.unittouu(svg.get('width')))
-        height = float(inkex.unittouu(svg.get('height')))
+        width = float(self.unittouu(svg.get('width')))
+        height = float(self.unittouu(svg.get('height')))
 
         hexgrid = self.createLayer("Hex Grid")
         if 'centerdots' in self.optionallayers:
@@ -289,7 +294,7 @@ class HexmapEffect(inkex.Effect):
         hex_width = width / hex_cols
 
         if self.options.hexsize and self.options.hexsize > 0.1:
-            hex_width = self.options.hexsize * 90
+            hex_width = self.unittouu("%fin" % self.options.hexsize)
             hex_height = calc_hex_height(hex_width)
         else:
             hex_height = calc_hex_height(hex_width)
