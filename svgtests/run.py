@@ -24,9 +24,26 @@ if not os.path.exists(outputdir):
 chosen = [a for a in sys.argv[1:]
           if not a.startswith("-")]
 
+DEFAULT_LAYERS = ["--layer-grid=true",
+                  "--layer-fill=true",
+                  "--layer-coordinates=true",
+                  "--layer-centerdots=true"]
+
+ALL_LAYERS = DEFAULT_LAYERS + [
+    "--layer-vertices=true",
+    "--layer-circles=true"
+    ]
+
+def cr(c, r):
+    return ["-c", str(c),
+            "-r", str(r)]
+
 tests = {
-    "simple_1x1" : ["-c", "1",
-                    "-r", "1"]
+    "simple_1x1" : cr(1, 1) + DEFAULT_LAYERS,
+    "all_layers_1x1" : cr(1, 1) + ALL_LAYERS,
+
+# not used because it is so slow and requires 14 MB expected file
+    #    "huge_200x200" : cr(200, 200) + ["--layer-grid=true"],
     }
 
 successes = 0
