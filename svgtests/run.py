@@ -24,15 +24,15 @@ if not os.path.exists(outputdir):
 chosen = [a for a in sys.argv[1:]
           if not a.startswith("-")]
 
-DEFAULT_LAYERS = ["--layer-grid=true",
-                  "--layer-fill=true",
-                  "--layer-coordinates=true",
-                  "--layer-centerdots=true"]
+GRID = ["--layer-grid=true"]
+FILL = ["--layer-fill=true"]
+COORDINATES = ["--layer-coordinates=true"]
+CENTERDOTS = ["--layer-centerdots=true"]
+VERTICES = ["--layer-vertices=true"]
+CIRCLES =  ["--layer-circles=true"]
 
-ALL_LAYERS = DEFAULT_LAYERS + [
-    "--layer-vertices=true",
-    "--layer-circles=true"
-    ]
+DEFAULT_LAYERS = GRID + FILL + COORDINATES + CENTERDOTS
+ALL_LAYERS = DEFAULT_LAYERS + VERTICES + CIRCLES
 
 def cr(c, r):
     return ["-c", str(c),
