@@ -69,6 +69,9 @@ class HexmapEffect(inkex.Effect):
         self.OptionParser.add_option('-z', '--hexsize',
                                      action = 'store', default = 0.0,
                                      type = 'float', dest = 'hexsize')
+        self.OptionParser.add_option('-w', '--strokewidth',
+                                     action = 'store', default = 0.0,
+                                     type = 'float', dest = 'strokewidth')
         self.OptionParser.add_option('-O', '--coordrows', action = 'store',
                                      type = 'int', dest = 'coordrows',
                                      default = '1')
@@ -142,7 +145,7 @@ class HexmapEffect(inkex.Effect):
         line.set("x2", str(p2.x))
         line.set("y2", str(p2.y))
         line.set("stroke", "black")
-        line.set("stroke-width", str(self.unittouu("%fin" % (1 / 72.0))))
+        line.set("stroke-width", str(self.unittouu("%fin" % (self.options.strokewidth / 72.0))))
         line.set("stroke-linecap", "round")
         return line
 
@@ -162,7 +165,7 @@ class HexmapEffect(inkex.Effect):
         pointsdef = " ".join(pointsdefa)
         poly.set("points", pointsdef)
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
-        poly.set("stroke-width", str(self.unittouu("%fin" % (1 / 72.0))))
+        poly.set("stroke-width", str(self.unittouu("%fin" % (self.options.strokewidth / 72.0))))
         poly.set("stroke-linecap", "round")
         return poly
 
