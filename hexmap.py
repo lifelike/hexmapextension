@@ -324,6 +324,11 @@ class HexmapEffect(inkex.Effect):
         else:
             hex_height = calc_hex_height(hex_width)
 
+        # square bricks workaround
+        if bricks:
+            hex_height = hex_width
+            hex_width = hex_width / 0.75
+
         hexes_height = hex_height * hex_rows
         hexes_width = hex_width * 0.75 * cols + hex_width * 0.25
 
