@@ -43,7 +43,7 @@ def calc_hex_height(hex_width):
 
 COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
 COORD_YOFFSET_PART = 75
-CENTERDOT_SIZE_PART_OF_HEX_HEIGHT = 0.02
+CENTERDOT_SIZE_FACTOR = 1.1690625
 
 LAYERS = ["grid", "centerdots", "vertices", "fill", "coordinates", "circles"]
 
@@ -221,6 +221,8 @@ class HexmapEffect(inkex.Effect):
                                             * self.verticesize, p2))
 
     def effect(self):
+        strokewidth = self.options.strokewidth
+
         cols = self.options.cols
         rows = self.options.rows
         halves = self.options.halfhexes == "true"
@@ -335,7 +337,7 @@ class HexmapEffect(inkex.Effect):
         self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
         if self.coordsize > 1.0:
             self.coordsize = round(self.coordsize)
-        self.centerdotsize = hex_height * CENTERDOT_SIZE_PART_OF_HEX_HEIGHT
+        self.centerdotsize = strokewidth * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
         self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
