@@ -70,7 +70,7 @@ class HexmapEffect(inkex.Effect):
                                      action = 'store', default = 0.0,
                                      type = 'float', dest = 'hexsize')
         self.OptionParser.add_option('-w', '--strokewidth',
-                                     action = 'store', default = 0.0,
+                                     action = 'store', default = 1.0,
                                      type = 'float', dest = 'strokewidth')
         self.OptionParser.add_option('-O', '--coordrows', action = 'store',
                                      type = 'int', dest = 'coordrows',
