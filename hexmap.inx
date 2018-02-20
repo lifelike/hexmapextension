@@ -16,10 +16,6 @@
       precision="3"
         _gui-text
       ="Hex Size (inches, ignore document size)"></param>
-  <param name="strokewidth" type="float" min="1.0" max="5.0"
-      precision="1"
-	_gui-text
-      ="Stroke Width (pt)"></param>
 </page>
 
 <page name="page_1" gui-text="Style">
@@ -27,6 +23,10 @@
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
+  <param name="strokewidth" type="float" min="0.1" max="5.0"
+      precision="1"
+	_gui-text
+      ="Stroke Width (pt)"></param>
 </page>
 
 <page name="page_1" gui-text="Coords">
