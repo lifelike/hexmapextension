@@ -1,0 +1,44 @@
+* Inkscape Hex Map Extension
+
+ Copyright 2008-2018 Pelle Nilsson
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+** Introduction
+This is an extension for creating hex grids in [[http://www.inkscape.org][Inkscape.]] It can also be used to
+make brick patterns of staggered rectangles.
+
+** Installing
+To install the extension you need to copy *hexmap.inx*
+and *hexmap.py*
+into the *extensions* folder (directory) of your
+Inkscape installation. In Linux this will typically be
+*/usr/share/inkscape/extensions*
+or *~/.config/inkscape/extensions*.
+In Windows it will be something like
+*C:\Program Files\Inkscape\share\extensions*. After (re)starting
+Inkscape you should now have *Boardgames* submenu in the
+Extensions menu, and in that an entry for running
+*Generate Hex Map*.
+
+** Running The Extension
+Creates a grid of hexagons over the document. Five layers
+are created:
+
+- *Hex Grid* The hexgrid itself. Each hex border is a separate line object.
+- *Hex Centerdot* A small circle in the center of each hex, as is needed for many games.
+- *Hex Fill* One polygon object for each hex. Can be used to quickly add a color or pattern to hexes.
+- *Hex Coordinates* The coordinate label of each hex. The format of each label is controlled by parameters in the effect's dialog window.
+- *Hex Corners* Corners/Vertices  of each hex only. Use as alternative to the normal hexgrid if you prefer a map with less visible grid. Some people call these caltrops.
