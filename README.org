@@ -34,7 +34,7 @@ Extensions menu, and in that an entry for running
 *Generate Hex Map*.
 
 ** Running The Extension
-Creates a grid of hexagons over the document. Five layers
+Creates a grid of hexagons over the document. Up to six layers
 are created:
 
 - *Hex Grid* The hexgrid itself. Each hex border is a separate line object.
@@ -42,3 +42,4 @@ are created:
 - *Hex Fill* One polygon object for each hex. Can be used to quickly add a color or pattern to hexes.
 - *Hex Coordinates* The coordinate label of each hex. The format of each label is controlled by parameters in the effect's dialog window.
 - *Hex Corners* Corners/Vertices  of each hex only. Use as alternative to the normal hexgrid if you prefer a map with less visible grid. Some people call these caltrops.
+- *Hex Circles* Circles the size of each hex.
