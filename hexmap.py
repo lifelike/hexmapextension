@@ -67,8 +67,8 @@ class HexmapEffect(inkex.Effect):
                                      default = '10',
                                      help = 'Number of columns.')
         self.OptionParser.add_option('-z', '--hexsize',
-                                     action = 'store', default = 0.0,
-                                     type = 'float', dest = 'hexsize')
+                                     action = 'store', default = "",
+                                     type = 'string', dest = 'hexsize')
         self.OptionParser.add_option('-w', '--strokewidth',
                                      action = 'store', default = 1.0,
                                      type = 'float', dest = 'strokewidth')
@@ -320,8 +320,19 @@ class HexmapEffect(inkex.Effect):
 
         hex_width = width / hex_cols
 
-        if self.options.hexsize and self.options.hexsize > 0.1:
-            hex_width = self.unittouu("%fin" % self.options.hexsize)
+        if self.options.hexsize and self.options.hexsize != "":
+            try:
+                hex_width = self.unittouu(self.options.hexsize)
+            except:
+                sys.exit("Failed to parse hexsize '%s'. Must be "
+                         "digits followed by optional unit name "
+                         "(e.g. mm, cm, in, pt). If no unit is "
+                         "named the default will be whatever the "
+                         "default units for the document is.")
+            if hex_width < 0:
+                sys.exit("Negative hex size makes no sense.")
+            elif hex_width == 0:
+                sys.exit("Can not make a grid with 0 size hexes.")
             hex_height = calc_hex_height(hex_width)
         else:
             hex_height = calc_hex_height(hex_width)

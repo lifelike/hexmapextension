@@ -12,10 +12,8 @@
         max="1000">10</param>
   <param name="rows" type="int" _gui-text="Rows" min="1"
         max="1000">10</param>
-  <param name="hexsize" type="float" min="0.0"
-      precision="3"
-        _gui-text
-      ="Hex Size (inches, ignore document size)"></param>
+  <param name="hexsize" type="string"
+        _gui-text ="Hex Size (optional)"></param>
 </page>
 
 <page name="page_1" gui-text="Style">
@@ -23,8 +21,8 @@
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
-  <param name="strokewidth" type="float" min="0.1" max="5.0"
-      precision="1"
+  <param name="strokewidth" type="float" min="0.001" max="5.0"
+      precision="3"
 	_gui-text
       ="Stroke Width (pt)"></param>
 </page>
