@@ -140,10 +140,10 @@ class HexmapEffect(inkex.Effect):
 
     def svg_line(self, p1, p2):
         line = etree.Element('line')
-        line.set("x1", str(p1.x))
-        line.set("y1", str(p1.y))
-        line.set("x2", str(p2.x))
-        line.set("y2", str(p2.y))
+        line.set("x1", str(p1.x + self.xoffset))
+        line.set("y1", str(p1.y + self.yoffset))
+        line.set("x2", str(p2.x + self.xoffset))
+        line.set("y2", str(p2.y + self.yoffset))
         line.set("stroke", "black")
         line.set("stroke-width", str(self.stroke_width))
         line.set("stroke-linecap", "round")
@@ -151,8 +151,8 @@ class HexmapEffect(inkex.Effect):
 
     def svg_circle(self, p, radius):
         circle = etree.Element("circle")
-        circle.set("cx", str(p.x))
-        circle.set("cy", str(p.y))
+        circle.set("cx", str(p.x + self.xoffset))
+        circle.set("cy", str(p.y + self.yoffset))
         circle.set("r", str(radius))
         circle.set("fill", "black")
         return circle
@@ -161,7 +161,8 @@ class HexmapEffect(inkex.Effect):
         poly = etree.Element("polygon")
         pointsdefa = []
         for p in points:
-            pointsdefa.append(str(p))
+            offset_p = Point(p.x + self.xoffset, p.y + self.yoffset)
+            pointsdefa.append(str(offset_p))
         pointsdef = " ".join(pointsdefa)
         poly.set("points", pointsdef)
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
@@ -203,8 +204,8 @@ class HexmapEffect(inkex.Effect):
 
         self.logwrite(" coord-> '%s'\n" % (coord))
         text = etree.Element('text')
-        text.set('x', str(p.x))
-        text.set('y', str(p.y))
+        text.set('x', str(p.x + self.xoffset))
+        text.set('y', str(p.y + self.yoffset))
         style = ("text-align:center;text-anchor:%s;font-size:%fpt"
                  % (anchor, self.coordsize))
         text.set('style', style)
@@ -274,8 +275,18 @@ class HexmapEffect(inkex.Effect):
         self.logwrite("xshift: %s, halves: %s\n" % (str(xshift), str(halves)))
 
         svg = self.document.xpath('//svg:svg' , namespaces=NSS)[0]
-        width = float(self.unittouu(svg.get('width')))
-        height = float(self.unittouu(svg.get('height')))
+
+        self.stroke_width = self.parse_float_with_unit(
+            self.options.strokewidth, "stroke width")
+
+        width = float(self.unittouu(svg.get('width'))) - self.stroke_width
+        height = float(self.unittouu(svg.get('height'))) - self.stroke_width
+
+        # So I was a bit lazy and only added an offset to all the
+        # svg_* functions to compensate for the stroke width.
+        # There should be a better way.
+        self.xoffset = self.stroke_width * 0.5
+        self.yoffset = self.stroke_width * 0.5
 
         # FIXME there is room for improvement here
         if 'grid' in self.enabled_layers:
@@ -336,8 +347,6 @@ class HexmapEffect(inkex.Effect):
         self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
         if self.coordsize > 1.0:
             self.coordsize = round(self.coordsize)
-        self.stroke_width = self.parse_float_with_unit(
-            self.options.strokewidth, "stroke width")
         self.centerdotsize = self.stroke_width * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
@@ -345,7 +354,7 @@ class HexmapEffect(inkex.Effect):
                                                           hex_height))
 
         # FIXME try to remember what 0.005 is for
-        yoffset = COORD_YOFFSET_PART * hex_height * 0.005
+        coord_yoffset = COORD_YOFFSET_PART * hex_height * 0.005
 
         for col in xrange(cols + 1):
             cx = (2.0 + col * 3.0) * 0.25 * hex_width
@@ -363,7 +372,7 @@ class HexmapEffect(inkex.Effect):
                     c = c.rotated(hexes_width)
                 if (hexcoords is not None
                     and (col < cols or xshift) and row < rows):
-                    cc = c + Point(0, yoffset)
+                    cc = c + Point(0, coord_yoffset)
                     anchor = 'middle'
                     if xshift and col == 0:
                         anchor = 'start'
