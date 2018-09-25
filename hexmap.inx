@@ -21,10 +21,8 @@
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
-  <param name="strokewidth" type="float" min="0.001" max="5.0"
-      precision="3"
-	_gui-text
-      ="Stroke Width (pt)"></param>
+  <param name="strokewidth" type="string"
+	_gui-text ="Stroke Width">1pt</param>
 </page>
 
 <page name="page_1" gui-text="Coords">

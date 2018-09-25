@@ -70,8 +70,8 @@ class HexmapEffect(inkex.Effect):
                                      action = 'store', default = "",
                                      type = 'string', dest = 'hexsize')
         self.OptionParser.add_option('-w', '--strokewidth',
-                                     action = 'store', default = 1.0,
-                                     type = 'float', dest = 'strokewidth')
+                                     action = 'store', default = "1pt",
+                                     type = 'string', dest = 'strokewidth')
         self.OptionParser.add_option('-O', '--coordrows', action = 'store',
                                      type = 'int', dest = 'coordrows',
                                      default = '1')
@@ -145,7 +145,7 @@ class HexmapEffect(inkex.Effect):
         line.set("x2", str(p2.x))
         line.set("y2", str(p2.y))
         line.set("stroke", "black")
-        line.set("stroke-width", str(self.unittouu("%fin" % (self.options.strokewidth / 72.0))))
+        line.set("stroke-width", str(self.stroke_width))
         line.set("stroke-linecap", "round")
         return line
 
@@ -165,7 +165,7 @@ class HexmapEffect(inkex.Effect):
         pointsdef = " ".join(pointsdefa)
         poly.set("points", pointsdef)
         poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
-        poly.set("stroke-width", str(self.unittouu("%fin" % (self.options.strokewidth / 72.0))))
+        poly.set("stroke-width", str(self.stroke_width))
         poly.set("stroke-linecap", "round")
         return poly
 
@@ -321,21 +321,9 @@ class HexmapEffect(inkex.Effect):
         hex_width = width / hex_cols
 
         if self.options.hexsize and self.options.hexsize != "":
-            try:
-                hex_width = self.unittouu(self.options.hexsize)
-            except:
-                sys.exit("Failed to parse hexsize '%s'. Must be "
-                         "digits followed by optional unit name "
-                         "(e.g. mm, cm, in, pt). If no unit is "
-                         "named the default will be whatever the "
-                         "default units for the document is.")
-            if hex_width < 0:
-                sys.exit("Negative hex size makes no sense.")
-            elif hex_width == 0:
-                sys.exit("Can not make a grid with 0 size hexes.")
-            hex_height = calc_hex_height(hex_width)
-        else:
-            hex_height = calc_hex_height(hex_width)
+            hex_width = self.parse_float_with_unit(self.options.hexsize,
+                                                   "hex size")
+        hex_height = calc_hex_height(hex_width)
 
         # square bricks workaround
         if bricks:
@@ -348,7 +336,9 @@ class HexmapEffect(inkex.Effect):
         self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
         if self.coordsize > 1.0:
             self.coordsize = round(self.coordsize)
-        self.centerdotsize = strokewidth * CENTERDOT_SIZE_FACTOR
+        self.stroke_width = self.parse_float_with_unit(
+            self.options.strokewidth, "stroke width")
+        self.centerdotsize = self.stroke_width * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
         self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
@@ -470,6 +460,20 @@ class HexmapEffect(inkex.Effect):
         self.append_if_new_name(svg, hexvertices)
         self.append_if_new_name(svg, hexcoords)
         self.append_if_new_name(svg, hexdots)
+
+    def parse_float_with_unit(self, value, name):
+        try:
+            result = hex_width = self.unittouu(value.strip())
+        except:
+            sys.exit("Failed to parse %s '%s'. Must be "
+                     "digits followed by optional unit name "
+                     "(e.g. mm, cm, in, pt). If no unit is "
+                     "named the default will be whatever the "
+                     "default units for the document is."
+                     % (name, value))
+        if result <= 0:
+            sys.exit("%s must be positive" % name)
+        return result
 
     def append_if_new_name(self, svg, layer):
         if layer is not None:
