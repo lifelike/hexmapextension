@@ -103,6 +103,10 @@ class HexmapEffect(inkex.Effect):
                                      default = '',
                                      type = 'string',
                                      dest = 'coordseparator')
+        self.OptionParser.add_option('-G', '--layers-in-group',
+                                     action = 'store',
+                                     dest = 'layersingroup', default = False,
+                                     help = "Put all layers in a layer group.")
         self.OptionParser.add_option('-A', '--coordalphacol', action = 'store',
                                      dest = 'coordalphacol', default = False,
                                      help = "Reverse row coordinates.")
@@ -237,6 +241,7 @@ class HexmapEffect(inkex.Effect):
         bricks = self.options.bricks == "true"
         squarebricks = self.options.squarebricks == "true"
         rotate = self.options.rotate == "true"
+        layersingroup = self.options.layersingroup == "true"
 
         self.coordseparator = self.options.coordseparator
         if self.coordseparator == None:
@@ -468,13 +473,16 @@ class HexmapEffect(inkex.Effect):
                         if coldown and row == rows - 1 and col < cols:
                             self.add_hexline(hexgrid, hexvertices, p[1], p[2])
                             self.logwrite("line 1-2\n")
-
-        self.append_if_new_name(svg, hexfill)
-        self.append_if_new_name(svg, hexcircles)
-        self.append_if_new_name(svg, hexgrid)
-        self.append_if_new_name(svg, hexvertices)
-        self.append_if_new_name(svg, hexcoords)
-        self.append_if_new_name(svg, hexdots)
+        parent = svg
+        if layersingroup:
+            parent = self.createLayer("Hex Map")
+            self.append_if_new_name(svg, parent)
+        self.append_if_new_name(parent, hexfill)
+        self.append_if_new_name(parent, hexcircles)
+        self.append_if_new_name(parent, hexgrid)
+        self.append_if_new_name(parent, hexvertices)
+        self.append_if_new_name(parent, hexcoords)
+        self.append_if_new_name(parent, hexdots)
 
     def parse_float_with_unit(self, value, name):
         try:

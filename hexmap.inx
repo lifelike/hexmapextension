@@ -67,6 +67,8 @@
          _gui-text="Vertices">false</param>
   <param name="layer-circles" type="boolean"
          _gui-text="Circles">false</param>
+  <param name="layers-in-group" type="boolean"
+         _gui-text="Layers in Group">false</param>
 </page>
 
 <page name="page_1" gui-text="Debug">
