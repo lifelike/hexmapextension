@@ -88,6 +88,11 @@ class HexmapEffect(inkex.Effect):
                                      type = 'string',
                                      dest = 'bricks',
                                      default = False)
+        self.OptionParser.add_option('-S', '--squarebricks',
+                                     action = 'store',
+                                     type = 'string',
+                                     dest = 'squarebricks',
+                                     default = False)
         self.OptionParser.add_option('-t', '--rotate',
                                      action = 'store',
                                      type = 'string',
@@ -230,6 +235,7 @@ class HexmapEffect(inkex.Effect):
         xshift = self.options.xshift == "true"
         firstcoldown = self.options.firstcoldown == "true"
         bricks = self.options.bricks == "true"
+        squarebricks = self.options.squarebricks == "true"
         rotate = self.options.rotate == "true"
 
         self.coordseparator = self.options.coordseparator
@@ -337,7 +343,7 @@ class HexmapEffect(inkex.Effect):
         hex_height = calc_hex_height(hex_width)
 
         # square bricks workaround
-        if bricks:
+        if bricks and squarebricks:
             hex_height = hex_width
             hex_width = hex_width / 0.75
 

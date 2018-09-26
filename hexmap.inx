@@ -23,6 +23,8 @@
 <page name="page_1" gui-text="Style">
   <param name="bricks" type="boolean"
         _gui-text="Bricks">false</param>
+  <param name="squarebricks" type="boolean"
+        _gui-text="  Force Square Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
   <param name="halfhexes" type="boolean"
