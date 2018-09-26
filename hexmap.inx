@@ -14,6 +14,10 @@
          max="1000000">10</param>
   <param name="hexsize" type="string"
         _gui-text ="Hex Size (optional)"></param>
+  <param name="strokewidth" type="string"
+	_gui-text ="Stroke Width">1pt</param>
+  <param name="verticesize" type="int" min="0" max="50"
+        _gui-text="Size of vertices (%)">10</param>
 </page>
 
 <page name="page_1" gui-text="Style">
@@ -21,8 +25,12 @@
         _gui-text="Bricks">false</param>
   <param name="rotate" type="boolean"
         _gui-text="Rotate">false</param>
-  <param name="strokewidth" type="string"
-	_gui-text ="Stroke Width">1pt</param>
+  <param name="halfhexes" type="boolean"
+        _gui-text="Half hexes at top and bottom">false</param>
+  <param name="xshift" type="boolean"
+        _gui-text="Shift grid to side and wrap">false</param>
+  <param name="firstcoldown" type="boolean"
+        _gui-text="First column half-hex down">false</param>
 </page>
 
 <page name="page_1" gui-text="Coords">
@@ -38,18 +46,10 @@
         _gui-text="Zero-Padded Coordinates">true</param>
   <param name="coordrows" type="int" min="1" max="100"
         _gui-text="Coordinates Every ... Rows">1</param>
-  <param name="halfhexes" type="boolean"
-        _gui-text="Half hexes at top and bottom">false</param>
-  <param name="xshift" type="boolean"
-        _gui-text="Shift grid to side and wrap">false</param>
-  <param name="firstcoldown" type="boolean"
-        _gui-text="First column half-hex down">false</param>
   <param name="coordcolstart" type="int" _gui-text="First Col Nr" min="0"
         max="1000">1</param>
   <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"
         max="1000">1</param>
-  <param name="verticesize" type="int" min="0" max="50"
-        _gui-text="Size of vertices (%)">10</param>
 </page>
 
 <page name="page_1" gui-text="Layers">
