@@ -29,7 +29,16 @@ FILL = ["--layer-fill=true"]
 COORDINATES = ["--layer-coordinates=true"]
 CENTERDOTS = ["--layer-centerdots=true"]
 VERTICES = ["--layer-vertices=true"]
-CIRCLES =  ["--layer-circles=true"]
+CIRCLES = ["--layer-circles=true"]
+
+GROUP_LAYERS = ["--layers-in-group=true"]
+
+BRICKS = ["--bricks=true"]
+SQUAREBRICKS = ["--squarebricks=true"]
+ROTATE = ["--rotate=true"]
+HALFHEXES= ["--halfhexes=true"]
+XSHIFT= ["--xshift=true"]
+FIRSTCOLDOWN= ["--firstcoldown=true"]
 
 DEFAULT_LAYERS = GRID + FILL + COORDINATES + CENTERDOTS
 ALL_LAYERS = DEFAULT_LAYERS + VERTICES + CIRCLES
@@ -38,9 +47,37 @@ def cr(c, r):
     return ["-c", str(c),
             "-r", str(r)]
 
+def hexsize(s):
+    return ['--hexsize=%s' % s]
+
+def verticesize(s):
+    return ["--verticesize=%d" % s]
+
+def strokewidth(w):
+    return ['--strokewidth="%s"' % w]
+
+def coordseparator(s):
+    return ['--coordseparator="%s"' % s]
+
+COORDALPHACOL = ["--coordalphacol=true"]
+COORDREVROW = ["--coordrevrow=true"]
+COORDROWFIRST = ["--coordrowfirst=true"]
+COORDZEROS = ["--coordzeros=true"]
+
+def coordrows(r):
+    return ["--coordrows=%d" % r]
+def coordcolstart(r):
+    return ["--coordcolstart=%d" % r]
+def coordrowstart(r):
+    return ["--coordrowstart=%d" % r]
+
+DEFAULTS = ALL_LAYERS + cr(4,4) + verticesize(5) + hexsize("1in")
+
 tests = {
     "simple_1x1" : cr(1, 1) + DEFAULT_LAYERS,
     "all_layers_1x1" : cr(1, 1) + ALL_LAYERS,
+    "4x4" : cr(4, 4) + ALL_LAYERS,
+    "defaults" : DEFAULTS
     }
 
 successes = 0
