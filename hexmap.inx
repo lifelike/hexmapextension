@@ -8,10 +8,10 @@
 <param name="tab" type="notebook">
 
 <page name="page_1" gui-text="Size">
-<param name="cols" type="int" _gui-text="Columns" min="1"
-        max="1000">10</param>
+  <param name="cols" type="int" _gui-text="Columns" min="1"
+         max="1000000">10</param>
   <param name="rows" type="int" _gui-text="Rows" min="1"
-        max="1000">10</param>
+         max="1000000">10</param>
   <param name="hexsize" type="string"
         _gui-text ="Hex Size (optional)"></param>
 </page>
