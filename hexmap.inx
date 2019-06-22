@@ -20,7 +20,7 @@
         _gui-text="Size of vertices (%)">10</param>
 </page>
 
-<page name="page_1" gui-text="Style">
+<page name="page_2" gui-text="Style">
   <param name="bricks" type="boolean"
         _gui-text="Bricks">false</param>
   <param name="squarebricks" type="boolean"
@@ -35,7 +35,7 @@
         _gui-text="First column half-hex down">false</param>
 </page>
 
-<page name="page_1" gui-text="Coords">
+<page name="page_3" gui-text="Coords">
   <param name="coordseparator" type="string"
         _gui-text="Coordinate Separator">.</param>
   <param name="coordalphacol" type="boolean"
@@ -54,7 +54,7 @@
         max="1000">1</param>
 </page>
 
-<page name="page_1" gui-text="Layers">
+<page name="page_4" gui-text="Layers">
   <param name="layer-grid" type="boolean"
          _gui-text="Grid">true</param>
   <param name="layer-fill" type="boolean"
@@ -71,7 +71,7 @@
          _gui-text="Layers in Group">false</param>
 </page>
 
-<page name="page_1" gui-text="Debug">
+<page name="page_5" gui-text="Debug">
     <param name="log" type="string" _gui-text="Log File (optional)"></param>
 </page>
 
