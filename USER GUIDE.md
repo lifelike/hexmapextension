@@ -22,12 +22,12 @@ The height of a hex is √3/2*(Hex Size). The length of one of the sides of a he
 
 This example is a 5cm x 7cm page, with the extension set to create five rows and five columns. The hex size was left blank. As you can see the hexagons fill the width of the document before they fill the height. The hexagons are sized by the width of the page, and the rest of the page below the hexes is left blank.
 
-In the example the extension has been run once to create hexes, then run a second time to create "bricks" (re-colored green). Unless the "bricks" are set to be square (on the [style page](#force-square-bricks)), the width of the "bricks" is three-quarters of the "hex size" parameter, and the "brick" height is the same as the hex height, i.e. √3/2*(Hex Size). The "bricks" are centered at the same point as a similarly-sized hex.
+In the example the extension has been run once to create hexes, then run a second time to create "bricks" (re-colored green). Unless the "bricks" are set to be square (on the [style tab](#force-square-bricks)), the width of the "bricks" is three-quarters of the "hex size" parameter, and the "brick" height is the same as the hex height, i.e. √3/2*(Hex Size). The "bricks" are centered at the same point as a similarly-sized hex.
 
 ### Stroke width
 The width of the grid/vertices line segments. The stroke width also affects the size of the hex center dot, which will have a diameter of slightly more than twice the stroke width.
 
-### Size of vertices (%)
+### <a Size of vertices (%)
 Some games have partially drawn hexsides extending from the vertices (see picture below). This parameter determines how far the hexside extends out from the vertex, with the length of the hexside being 100%. Since the partial hexside extends out from both ends, the two partial hexsides meet in the middle when the size is 50%. If the size is 50% the result is not distinguishable from the regular grid. See also the [Layers tab](#layers-tab).
 
 ![Hex map using vertices](documentation/images/ten-percent-vertices.png?raw=true "Hex map using verticies")
@@ -75,7 +75,7 @@ Layer containing the hex coordinates, structured per the [Coords tab](#coords-ta
 Layer containing the hex centers. These are always solid black circles. See [Alternate Hex Centers](documentation/Alternate%20Hex%20Centers.md) for steps to place different centers.
 
 ### Vertices
-Some games print partial hexsides rather than full hexagons to mark the grid, as shown [previously](size-of-vertices-%28%25%29). This layer is a redundant with the grid layer (although you could change the color or thickness of one/both layers for some interesting effects).
+Some games print partial hexsides rather than full hexagons to mark the grid, as shown [previously](size-of-vertices-). This layer is a redundant with the grid layer (although you could change the color or thickness of one/both layers for some interesting effects).
 
 ### Circles
 Layer containing solid circles drawn with their centers where the hexagon centers are. These are generated as solid black circles with no stroke.
