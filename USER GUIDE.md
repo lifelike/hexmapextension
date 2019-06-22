@@ -97,7 +97,7 @@ This button closes the Hex Map Dialog Box.
 
 ## Alternate Hex Centers
 
-The hex center created by the Hex Map Extension is a single solid black circle, the size of which is determined by the stroke width. If you need a different shape for hex centers, here is a detailed list of steps that will allow you to create them. 
+The hex center created by the Hex Map Extension is a single solid black circle, the size of which is determined by the stroke width. If you need a different shape for hex centers, [here](documentation/Alternate%20Hex%20Centers.md) is a detailed list of steps that will allow you to create them. 
 
 ## The Real World!
 
