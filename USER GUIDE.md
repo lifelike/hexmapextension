@@ -27,7 +27,7 @@ In the example the extension has been run once to create hexes, then run a secon
 ### Stroke width
 The width of the grid/vertices line segments. The stroke width also affects the size of the hex center dot, which will have a diameter of slightly more than twice the stroke width.
 
-### <a Size of vertices (%)
+### Size of vertices (%)
 Some games have partially drawn hexsides extending from the vertices (see picture below). This parameter determines how far the hexside extends out from the vertex, with the length of the hexside being 100%. Since the partial hexside extends out from both ends, the two partial hexsides meet in the middle when the size is 50%. If the size is 50% the result is not distinguishable from the regular grid. See also the [Layers tab](#layers-tab).
 
 ![Hex map using vertices](documentation/images/ten-percent-vertices.png?raw=true "Hex map using verticies")
