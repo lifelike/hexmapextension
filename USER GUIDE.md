@@ -75,7 +75,7 @@ Layer containing the hex coordinates, structured per the [Coords tab](#coords-ta
 Layer containing the hex centers. These are always solid black circles. See [Alternate Hex Centers](documentation/Alternate%20Hex%20Centers.md) for steps to place different centers.
 
 ### Vertices
-Some games print partial hexsides rather than full hexagons to mark the grid, as shown [previously](size-of-vertices-). This layer is a redundant with the grid layer (although you could change the color or thickness of one/both layers for some interesting effects).
+Some games print partial hexsides rather than full hexagons to mark the grid, as shown [previously](#size-of-vertices-). This layer is a redundant with the grid layer (although you could change the color or thickness of one/both layers for some interesting effects).
 
 ### Circles
 Layer containing solid circles drawn with their centers where the hexagon centers are. These are generated as solid black circles with no stroke.
