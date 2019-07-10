@@ -1,0 +1,5 @@
+# Calculated Hex Size
+
+When the hex size parameter is left blank, the size of the hexes is calculated so the number of rows and columns will fit on the page without overflowing. The program finds the smallest dimension (height or width) page that will fit the number of rows and columns specified. The grid lines are not of zero thickness, so half a grid line thickness is subtracted from each edge (total of one grid line thickness). Thicker grid lines will result in (slightly) smaller hex sizes because of the margin to allow the full lines at the edges to fit inside the page. The remaining space is divided evenly by the number of rows or columns, depending on which would be filled first.
+
+For example, if the page size is 5 cm. by 7 cm., regular hexes will fill out the width of the page before they fill out the height. If the stroke width is 1.5 mm. (0.15 cm.), the calculated hex size will be (5 - 0.15)/5 = 1.2125 cm.
