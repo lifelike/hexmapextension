@@ -227,8 +227,8 @@ class HexmapEffect(inkex.Effect):
         if verticelayer is not None:
             verticelayer.append(self.svg_line(p1, (p2 - p1)
                                             * self.verticesize + p1))
-            verticelayer.append(self.svg_line(p2 - (p2 - p1)
-                                            * self.verticesize, p2))
+            verticelayer.append(self.svg_line(p2, p2 - (p2 - p1)
+                                            * self.verticesize))
 
     def effect(self):
         strokewidth = self.options.strokewidth
