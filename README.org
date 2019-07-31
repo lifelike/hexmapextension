@@ -1,6 +1,6 @@
 * Inkscape Hex Map Extension
 
- Copyright 2008-2018 Pelle Nilsson
+ Copyright 2008-2019 Pelle Nilsson and contributors
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -43,3 +43,8 @@ are created:
 - *Hex Coordinates* The coordinate label of each hex. The format of each label is controlled by parameters in the effect's dialog window.
 - *Hex Corners* Corners/Vertices  of each hex only. Use as alternative to the normal hexgrid if you prefer a map with less visible grid. Some people call these caltrops.
 - *Hex Circles* Circles the size of each hex.
+
+** User Guide
+There is a separate [[https://github.com/lifelike/hexmapextension/blob/master/USER%20GUIDE.md][User Guide]] document with much more information and help
+that is recommended reading for anyone about to use this extension or that
+is considering to use it.
