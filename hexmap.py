@@ -47,91 +47,87 @@ CENTERDOT_SIZE_FACTOR = 1.1690625
 
 LAYERS = ["grid", "centerdots", "vertices", "fill", "coordinates", "circles"]
 
-class HexmapEffect(inkex.Effect):
-    def __init__(self):
-        inkex.Effect.__init__(self)
-        # quick attempt compatibility with Inkscape older than 0.91:
-        if not hasattr(self, 'unittouu'):
-            self.unittouu = inkex.unittouu
+class HexmapEffect(inkex.EffectExtension):
+    def add_arguments(self, pars):
         self.log = False
-        self.arg_parser.add_argument("--tab",  action="store", type=str,
+        pars.add_argument("--tab",  action="store", type=str,
                                      dest="tab")
-        self.arg_parser.add_argument('-l', '--log', action = 'store',
+        pars.add_argument('-l', '--log', action = 'store',
                                      type = str, dest = 'logfile')
-        self.arg_parser.add_argument('-c', '--cols', action = 'store',
+        pars.add_argument('-c', '--cols', action = 'store',
                                      type = int, dest = 'cols',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.arg_parser.add_argument('-r', '--rows', action = 'store',
+        pars.add_argument('-r', '--rows', action = 'store',
                                      type = int, dest = 'rows',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.arg_parser.add_argument('-z', '--hexsize',
+        pars.add_argument('-z', '--hexsize',
                                      action = 'store', default = "",
                                      type = str, dest = 'hexsize')
-        self.arg_parser.add_argument('-w', '--strokewidth',
+        pars.add_argument('-w', '--strokewidth',
                                      action = 'store', default = "1pt",
                                      type = str, dest = 'strokewidth')
-        self.arg_parser.add_argument('-O', '--coordrows', action = 'store',
+        pars.add_argument('-O', '--coordrows', action = 'store',
                                      type = int, dest = 'coordrows',
                                      default = '1')
-        self.arg_parser.add_argument('-s', '--coordcolstart',
+        pars.add_argument('-s', '--coordcolstart',
                                      action = 'store',
                                      type = int, dest = 'coordcolstart',
                                      default = '1')
-        self.arg_parser.add_argument('-o', '--coordrowstart',
+        pars.add_argument('-o', '--coordrowstart',
                                      action = 'store',
                                      type = int, dest = 'coordrowstart',
                                      default = '1')
-        self.arg_parser.add_argument('-b', '--bricks',
+        pars.add_argument('-b', '--bricks',
                                      action = 'store',
                                      type = str,
                                      dest = 'bricks',
                                      default = False)
-        self.arg_parser.add_argument('-S', '--squarebricks',
+        pars.add_argument('-S', '--squarebricks',
                                      action = 'store',
                                      type = str,
                                      dest = 'squarebricks',
                                      default = False)
-        self.arg_parser.add_argument('-t', '--rotate',
+        pars.add_argument('-t', '--rotate',
                                      action = 'store',
                                      type = str,
                                      dest = 'rotate',
                                      default = False)
-        self.arg_parser.add_argument('-C', '--coordseparator',
+        pars.add_argument('-C', '--coordseparator',
                                      action = 'store',
                                      default = '',
                                      type = str,
                                      dest = 'coordseparator')
-        self.arg_parser.add_argument('-G', '--layers-in-group',
+        pars.add_argument('-G', '--layers-in-group',
                                      action = 'store',
                                      dest = 'layersingroup', default = False,
                                      help = "Put all layers in a layer group.")
-        self.arg_parser.add_argument('-A', '--coordalphacol', action = 'store',
+        pars.add_argument('-A', '--coordalphacol', action = 'store',
                                      dest = 'coordalphacol', default = False,
                                      help = "Reverse row coordinates.")
-        self.arg_parser.add_argument('-R', '--coordrevrow', action = 'store',
+        pars.add_argument('-R', '--coordrevrow', action = 'store',
                                      dest = 'coordrevrow', default = False,
                                      help = "Reverse row coordinates.")
-        self.arg_parser.add_argument('-Z', '--coordzeros', action = 'store',
+        pars.add_argument('-Z', '--coordzeros', action = 'store',
                                      dest = 'coordzeros', default = True)
-        self.arg_parser.add_argument('-F', '--coordrowfirst', action = 'store',
+        pars.add_argument('-F', '--coordrowfirst', action = 'store',
                                      dest = 'coordrowfirst', default = False,
                                      help = "Reverse row coordinates.")
-        self.arg_parser.add_argument('-X', '--xshift', action = 'store',
+        pars.add_argument('-X', '--xshift', action = 'store',
                                      dest = 'xshift', default = False,
                                      help = "Shift grid half hex and wrap.")
-        self.arg_parser.add_argument('-f', '--firstcoldown', action = 'store',
+        pars.add_argument('-f', '--firstcoldown', action = 'store',
                                      dest = 'firstcoldown', default = False,
                                      help = "Make first column half-hex down.")
-        self.arg_parser.add_argument('-H', '--halfhexes', action = 'store',
+        pars.add_argument('-H', '--halfhexes', action = 'store',
                                      dest = 'halfhexes', default = False)
-        self.arg_parser.add_argument('-Q', '--verticesize',
+        pars.add_argument('-Q', '--verticesize',
                                      action = 'store',
                                      dest = 'verticesize', default = 1,
                                      type = int)
         for layer in LAYERS:
-            self.arg_parser.add_argument('--layer-' + layer,
+            pars.add_argument('--layer-' + layer,
                                         default = "false",
                                         dest = layer, action = 'store')
 
@@ -505,5 +501,6 @@ class HexmapEffect(inkex.Effect):
                             for c in svg.iterchildren()]:
                 svg.append(layer)
 
-effect = HexmapEffect()
-effect.affect()
+if __name__ == '__main__':
+    effect = HexmapEffect()
+    effect.run()
