@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import inkex
 import sys
@@ -367,14 +367,14 @@ class HexmapEffect(inkex.Effect):
         # FIXME try to remember what 0.005 is for
         coord_yoffset = COORD_YOFFSET_PART * hex_height * 0.005
 
-        for col in xrange(cols + 1):
+        for col in range(cols + 1):
             cx = (2.0 + col * 3.0) * 0.25 * hex_width
             if xshift:
                 cx = cx - hex_width * 0.5
             coldown = col % 2
             if firstcoldown:
                 coldown = not coldown
-            for row in xrange(rows + 1):
+            for row in range(rows + 1):
                 cy = (0.5 + coldown * 0.5 + row) * hex_height
                 self.logwrite("col: %d, row: %d, c: %f %f\n" % (col, row,
                                                                 cx, cy))

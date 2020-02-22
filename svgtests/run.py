@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import difflib
 import glob
@@ -83,7 +83,7 @@ tests = {
 successes = 0
 fails = 0
 skipped = 0
-for name,options in tests.iteritems():
+for name,options in tests.items():
     if chosen:
         matches = False
         for c in chosen:
@@ -104,7 +104,7 @@ for name,options in tests.iteritems():
     commandline.append(svginfile)
 
     if ['-v' in sys.argv]:
-        print >> sys.stderr, ' '.join(commandline)
+        print(' '.join(commandline), file=sys.stderr)
 
     effect = subprocess.Popen(commandline,
                               stdout=svgout)
@@ -120,8 +120,8 @@ for name,options in tests.iteritems():
     if outputsvg == expectedsvg:
         successes += 1
     else:
-        print "FAIL: diff %s %s" % (svgoutfile, expectedfile)
+        print("FAIL: diff %s %s" % (svgoutfile, expectedfile))
         fails += 1
 
-print ("%d/%d tests OK (%d skipped, %d FAILED)\n"
-       % (successes, len(tests), skipped, fails))
+print(("%d/%d tests OK (%d skipped, %d FAILED)\n"
+       % (successes, len(tests), skipped, fails)))
