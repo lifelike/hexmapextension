@@ -54,84 +54,84 @@ class HexmapEffect(inkex.Effect):
         if not hasattr(self, 'unittouu'):
             self.unittouu = inkex.unittouu
         self.log = False
-        self.OptionParser.add_option("--tab",  action="store", type="string",
+        self.arg_parser.add_argument("--tab",  action="store", type=str,
                                      dest="tab")
-        self.OptionParser.add_option('-l', '--log', action = 'store',
-                                     type = 'string', dest = 'logfile')
-        self.OptionParser.add_option('-c', '--cols', action = 'store',
-                                     type = 'int', dest = 'cols',
+        self.arg_parser.add_argument('-l', '--log', action = 'store',
+                                     type = str, dest = 'logfile')
+        self.arg_parser.add_argument('-c', '--cols', action = 'store',
+                                     type = int, dest = 'cols',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.OptionParser.add_option('-r', '--rows', action = 'store',
-                                     type = 'int', dest = 'rows',
+        self.arg_parser.add_argument('-r', '--rows', action = 'store',
+                                     type = int, dest = 'rows',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.OptionParser.add_option('-z', '--hexsize',
+        self.arg_parser.add_argument('-z', '--hexsize',
                                      action = 'store', default = "",
-                                     type = 'string', dest = 'hexsize')
-        self.OptionParser.add_option('-w', '--strokewidth',
+                                     type = str, dest = 'hexsize')
+        self.arg_parser.add_argument('-w', '--strokewidth',
                                      action = 'store', default = "1pt",
-                                     type = 'string', dest = 'strokewidth')
-        self.OptionParser.add_option('-O', '--coordrows', action = 'store',
-                                     type = 'int', dest = 'coordrows',
+                                     type = str, dest = 'strokewidth')
+        self.arg_parser.add_argument('-O', '--coordrows', action = 'store',
+                                     type = int, dest = 'coordrows',
                                      default = '1')
-        self.OptionParser.add_option('-s', '--coordcolstart',
+        self.arg_parser.add_argument('-s', '--coordcolstart',
                                      action = 'store',
-                                     type = 'int', dest = 'coordcolstart',
+                                     type = int, dest = 'coordcolstart',
                                      default = '1')
-        self.OptionParser.add_option('-o', '--coordrowstart',
+        self.arg_parser.add_argument('-o', '--coordrowstart',
                                      action = 'store',
-                                     type = 'int', dest = 'coordrowstart',
+                                     type = int, dest = 'coordrowstart',
                                      default = '1')
-        self.OptionParser.add_option('-b', '--bricks',
+        self.arg_parser.add_argument('-b', '--bricks',
                                      action = 'store',
-                                     type = 'string',
+                                     type = str,
                                      dest = 'bricks',
                                      default = False)
-        self.OptionParser.add_option('-S', '--squarebricks',
+        self.arg_parser.add_argument('-S', '--squarebricks',
                                      action = 'store',
-                                     type = 'string',
+                                     type = str,
                                      dest = 'squarebricks',
                                      default = False)
-        self.OptionParser.add_option('-t', '--rotate',
+        self.arg_parser.add_argument('-t', '--rotate',
                                      action = 'store',
-                                     type = 'string',
+                                     type = str,
                                      dest = 'rotate',
                                      default = False)
-        self.OptionParser.add_option('-C', '--coordseparator',
+        self.arg_parser.add_argument('-C', '--coordseparator',
                                      action = 'store',
                                      default = '',
-                                     type = 'string',
+                                     type = str,
                                      dest = 'coordseparator')
-        self.OptionParser.add_option('-G', '--layers-in-group',
+        self.arg_parser.add_argument('-G', '--layers-in-group',
                                      action = 'store',
                                      dest = 'layersingroup', default = False,
                                      help = "Put all layers in a layer group.")
-        self.OptionParser.add_option('-A', '--coordalphacol', action = 'store',
+        self.arg_parser.add_argument('-A', '--coordalphacol', action = 'store',
                                      dest = 'coordalphacol', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-R', '--coordrevrow', action = 'store',
+        self.arg_parser.add_argument('-R', '--coordrevrow', action = 'store',
                                      dest = 'coordrevrow', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-Z', '--coordzeros', action = 'store',
+        self.arg_parser.add_argument('-Z', '--coordzeros', action = 'store',
                                      dest = 'coordzeros', default = True)
-        self.OptionParser.add_option('-F', '--coordrowfirst', action = 'store',
+        self.arg_parser.add_argument('-F', '--coordrowfirst', action = 'store',
                                      dest = 'coordrowfirst', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-X', '--xshift', action = 'store',
+        self.arg_parser.add_argument('-X', '--xshift', action = 'store',
                                      dest = 'xshift', default = False,
                                      help = "Shift grid half hex and wrap.")
-        self.OptionParser.add_option('-f', '--firstcoldown', action = 'store',
+        self.arg_parser.add_argument('-f', '--firstcoldown', action = 'store',
                                      dest = 'firstcoldown', default = False,
                                      help = "Make first column half-hex down.")
-        self.OptionParser.add_option('-H', '--halfhexes', action = 'store',
+        self.arg_parser.add_argument('-H', '--halfhexes', action = 'store',
                                      dest = 'halfhexes', default = False)
-        self.OptionParser.add_option('-Q', '--verticesize',
+        self.arg_parser.add_argument('-Q', '--verticesize',
                                      action = 'store',
                                      dest = 'verticesize', default = 1,
-                                     type = 'int')
+                                     type = int)
         for layer in LAYERS:
-            self.OptionParser.add_option('--layer-' + layer,
+            self.arg_parser.add_argument('--layer-' + layer,
                                         default = "false",
                                         dest = layer, action = 'store')
 
