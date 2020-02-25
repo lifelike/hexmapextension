@@ -2,7 +2,7 @@
 
 # FIXME temporary to test
 #EXTENSIONSDIR=/usr/share/inkscape/extensions/
-EXTENSIONSDIR=$HOME/src/extensions-inkscape
+EXTENSIONSDIR=$HOME/src/inkscape/share/extensions
 
 # FIXME this is to run locally compiled inkscape 1.0
 TMPPATH=$HOME/inksape/inst/bin:$PATH
