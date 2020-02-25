@@ -20,6 +20,10 @@
 This is an extension for creating hex grids in [[http://www.inkscape.org][Inkscape.]] It can also be used to
 make brick patterns of staggered rectangles.
 
+You need Inkscape 0.92 or later installed. But NOT 1.0 or later!
+**Inkscape 1.0 is not yet supported. Use an older version
+of Inkscape to use this extension.**
+
 ** Installing
 To install the extension you need to copy *hexmap.inx*
 and *hexmap.py*
