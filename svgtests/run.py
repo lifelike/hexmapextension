@@ -24,14 +24,14 @@ if not os.path.exists(outputdir):
 chosen = [a for a in sys.argv[1:]
           if not a.startswith("-")]
 
-GRID = ["--layer-grid=true"]
-FILL = ["--layer-fill=true"]
-COORDINATES = ["--layer-coordinates=true"]
-CENTERDOTS = ["--layer-centerdots=true"]
-VERTICES = ["--layer-vertices=true"]
-CIRCLES = ["--layer-circles=true"]
+GRID = ["--layergrid=true"]
+FILL = ["--layerfill=true"]
+COORDINATES = ["--layercoordinates=true"]
+CENTERDOTS = ["--layercenterdots=true"]
+VERTICES = ["--layervertices=true"]
+CIRCLES = ["--layercircles=true"]
 
-GROUP_LAYERS = ["--layers-in-group=true"]
+GROUP_LAYERS = ["--layersingroup=true"]
 
 BRICKS = ["--bricks=true"]
 SQUAREBRICKS = ["--squarebricks=true"]
@@ -40,12 +40,14 @@ HALFHEXES= ["--halfhexes=true"]
 XSHIFT= ["--xshift=true"]
 FIRSTCOLDOWN= ["--firstcoldown=true"]
 
+ID = ["--id=foo"] # avoid crash in inkex.base.load
+
 DEFAULT_LAYERS = GRID + FILL + COORDINATES + CENTERDOTS
 ALL_LAYERS = DEFAULT_LAYERS + VERTICES + CIRCLES
 
 def cr(c, r):
-    return ["-c", str(c),
-            "-r", str(r)]
+    return ["--cols=" + str(c),
+            "--rows=" + str(r)]
 
 def hexsize(s):
     return ['--hexsize=%s' % s]
@@ -100,7 +102,7 @@ for name,options in tests.items():
     command = os.path.join('.', 'hexmap.py')
     logfile = os.path.join(logdir, 'cs_svgtests-%s.txt' % name)
     commandline = [command]
-    commandline.extend(options)
+    commandline.extend(options + ID)
     commandline.append(svginfile)
 
     if ['-v' in sys.argv]:

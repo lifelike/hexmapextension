@@ -48,88 +48,85 @@ CENTERDOT_SIZE_FACTOR = 1.1690625
 LAYERS = ["grid", "centerdots", "vertices", "fill", "coordinates", "circles"]
 
 class HexmapEffect(inkex.EffectExtension):
-    def add_arguments(self, pars):
+    def __init__(self):
+        super().__init__()
         self.log = False
-        pars.add_argument("--tab",  action="store", type=str,
-                                     dest="tab")
-        pars.add_argument('-l', '--log', action = 'store',
-                                     type = str, dest = 'logfile')
-        pars.add_argument('-c', '--cols', action = 'store',
-                                     type = int, dest = 'cols',
-                                     default = '10',
-                                     help = 'Number of columns.')
-        pars.add_argument('-r', '--rows', action = 'store',
-                                     type = int, dest = 'rows',
-                                     default = '10',
-                                     help = 'Number of columns.')
-        pars.add_argument('-z', '--hexsize',
-                                     action = 'store', default = "",
-                                     type = str, dest = 'hexsize')
-        pars.add_argument('-w', '--strokewidth',
-                                     action = 'store', default = "1pt",
-                                     type = str, dest = 'strokewidth')
-        pars.add_argument('-O', '--coordrows', action = 'store',
-                                     type = int, dest = 'coordrows',
-                                     default = '1')
-        pars.add_argument('-s', '--coordcolstart',
-                                     action = 'store',
-                                     type = int, dest = 'coordcolstart',
-                                     default = '1')
-        pars.add_argument('-o', '--coordrowstart',
-                                     action = 'store',
-                                     type = int, dest = 'coordrowstart',
-                                     default = '1')
-        pars.add_argument('-b', '--bricks',
-                                     action = 'store',
-                                     type = str,
-                                     dest = 'bricks',
-                                     default = False)
-        pars.add_argument('-S', '--squarebricks',
-                                     action = 'store',
-                                     type = str,
-                                     dest = 'squarebricks',
-                                     default = False)
-        pars.add_argument('-t', '--rotate',
-                                     action = 'store',
-                                     type = str,
-                                     dest = 'rotate',
-                                     default = False)
-        pars.add_argument('-C', '--coordseparator',
-                                     action = 'store',
-                                     default = '',
-                                     type = str,
-                                     dest = 'coordseparator')
-        pars.add_argument('-G', '--layers-in-group',
-                                     action = 'store',
-                                     dest = 'layersingroup', default = False,
-                                     help = "Put all layers in a layer group.")
-        pars.add_argument('-A', '--coordalphacol', action = 'store',
-                                     dest = 'coordalphacol', default = False,
-                                     help = "Reverse row coordinates.")
-        pars.add_argument('-R', '--coordrevrow', action = 'store',
-                                     dest = 'coordrevrow', default = False,
-                                     help = "Reverse row coordinates.")
-        pars.add_argument('-Z', '--coordzeros', action = 'store',
-                                     dest = 'coordzeros', default = True)
-        pars.add_argument('-F', '--coordrowfirst', action = 'store',
-                                     dest = 'coordrowfirst', default = False,
-                                     help = "Reverse row coordinates.")
-        pars.add_argument('-X', '--xshift', action = 'store',
-                                     dest = 'xshift', default = False,
-                                     help = "Shift grid half hex and wrap.")
-        pars.add_argument('-f', '--firstcoldown', action = 'store',
-                                     dest = 'firstcoldown', default = False,
-                                     help = "Make first column half-hex down.")
-        pars.add_argument('-H', '--halfhexes', action = 'store',
-                                     dest = 'halfhexes', default = False)
-        pars.add_argument('-Q', '--verticesize',
-                                     action = 'store',
-                                     dest = 'verticesize', default = 1,
-                                     type = int)
+
+    def add_arguments(self, pars):
+        pars.add_argument("--tab")
+        pars.add_argument('--log', type = str)
+        pars.add_argument('--cols',
+                          type = int,
+                          default = 10,
+                          help = 'Number of columns.')
+        pars.add_argument('--rows',
+                          type = int,
+                          default = 10,
+                          help = 'Number of columns.')
+        pars.add_argument('--hexsize',
+                          default = "",
+                          type = str,)
+        pars.add_argument('--strokewidth',
+                          default = "1pt",
+                          type = str)
+        pars.add_argument('--coordrows',
+                          type = int,
+                          default = 1)
+        pars.add_argument('--coordcolstart',
+                          type = int,
+                          default = 1)
+        pars.add_argument('--coordrowstart',
+                          type = int,
+                          default = 1)
+        pars.add_argument('--bricks',
+                          type = inkex.Boolean,
+                          default = False)
+        pars.add_argument('--squarebricks',
+                          type = inkex.Boolean,
+                          default = False)
+        pars.add_argument('--rotate',
+                          type = inkex.Boolean,
+                          default = False)
+        pars.add_argument('--coordseparator',
+                          default = '',
+                          type = str)
+        pars.add_argument('--layersingroup',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Put all layers in a layer group.")
+        pars.add_argument('--coordalphacol',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Reverse row coordinates.")
+        pars.add_argument('--coordrevrow',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Reverse row coordinates.")
+        pars.add_argument('--coordzeros',
+                          type = inkex.Boolean,
+                          default = True)
+        pars.add_argument('--coordrowfirst',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Reverse row coordinates.")
+        pars.add_argument('--xshift',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Shift grid half hex and wrap.")
+        pars.add_argument('--firstcoldown',
+                          type = inkex.Boolean,
+                          default = False,
+                          help = "Make first column half-hex down.")
+        pars.add_argument('--halfhexes',
+                          type = inkex.Boolean,
+                          default = False)
+        pars.add_argument('--verticesize',
+                          default = 1,
+                          type = int)
         for layer in LAYERS:
-            pars.add_argument('--layer-' + layer,
-                                        default = "false",
-                                        dest = layer, action = 'store')
+            pars.add_argument('--layer' + layer,
+                              type = inkex.Boolean,
+                              default = False)
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -138,8 +135,8 @@ class HexmapEffect(inkex.EffectExtension):
         return layer
 
     def logwrite(self, msg):
-        if not self.log and self.options.logfile:
-            self.log = open(self.options.logfile, 'w')
+        if not self.log and self.options.log:
+            self.log = open(self.options.log, 'w')
         if self.log:
             self.log.write(msg)
 
@@ -231,28 +228,28 @@ class HexmapEffect(inkex.EffectExtension):
 
         cols = self.options.cols
         rows = self.options.rows
-        halves = self.options.halfhexes == "true"
-        xshift = self.options.xshift == "true"
-        firstcoldown = self.options.firstcoldown == "true"
-        bricks = self.options.bricks == "true"
-        squarebricks = self.options.squarebricks == "true"
-        rotate = self.options.rotate == "true"
-        layersingroup = self.options.layersingroup == "true"
+        halves = self.options.halfhexes
+        xshift = self.options.xshift
+        firstcoldown = self.options.firstcoldown
+        bricks = self.options.bricks
+        squarebricks = self.options.squarebricks
+        rotate = self.options.rotate
+        layersingroup = self.options.layersingroup
 
         self.coordseparator = self.options.coordseparator
         if self.coordseparator == None:
             self.coordseparator = ""
-        self.coordrevrow = self.options.coordrevrow == "true"
+        self.coordrevrow = self.options.coordrevrow
         self.coordrevcol = False
-        self.coordalphacol = self.options.coordalphacol == "true"
+        self.coordalphacol = self.options.coordalphacol
         self.coordrows = self.options.coordrows
-        self.coordrowfirst = self.options.coordrowfirst == "true"
-        self.coordzeros = self.options.coordzeros == "true"
+        self.coordrowfirst = self.options.coordrowfirst
+        self.coordzeros = self.options.coordzeros
 
         self.enabled_layers = set()
 
         for layer in LAYERS:
-            if getattr(self.options, layer) == "true":
+            if getattr(self.options, "layer" + layer):
                 self.enabled_layers.add(layer)
 
         if len(self.enabled_layers) == 0:
@@ -286,8 +283,8 @@ class HexmapEffect(inkex.EffectExtension):
         self.stroke_width = self.parse_float_with_unit(
             self.options.strokewidth, "stroke width")
 
-        width = float(self.unittouu(svg.get('width'))) - self.stroke_width
-        height = float(self.unittouu(svg.get('height'))) - self.stroke_width
+        width = float(self.svg.unittouu(svg.get('width'))) - self.stroke_width
+        height = float(self.svg.unittouu(svg.get('height'))) - self.stroke_width
 
         # So I was a bit lazy and only added an offset to all the
         # svg_* functions to compensate for the stroke width.
@@ -482,7 +479,7 @@ class HexmapEffect(inkex.EffectExtension):
 
     def parse_float_with_unit(self, value, name):
         try:
-            result = hex_width = self.unittouu(value.strip())
+            result = hex_width = self.svg.unittouu(value.strip())
         except:
             sys.exit("Failed to parse %s '%s'. Must be "
                      "digits followed by optional unit name "
@@ -502,5 +499,4 @@ class HexmapEffect(inkex.EffectExtension):
                 svg.append(layer)
 
 if __name__ == '__main__':
-    effect = HexmapEffect()
-    effect.run()
+    HexmapEffect().run()

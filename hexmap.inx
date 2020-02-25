@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
-  <_name>Create Hexmap</_name>
+  <name>Create Hexmap</name>
   <id>pelles.effect.hexmap</id>
   <dependency type="executable" location="extensions">hexmap.py</dependency>
   <dependency type="executable" location="extensions">inkex.py</dependency>
@@ -8,71 +8,71 @@
 <param name="tab" type="notebook">
 
 <page name="page_1" gui-text="Size">
-  <param name="cols" type="int" _gui-text="Columns" min="1"
+  <param name="cols" type="int" gui-text="Columns" min="1"
          max="1000000">10</param>
-  <param name="rows" type="int" _gui-text="Rows" min="1"
+  <param name="rows" type="int" gui-text="Rows" min="1"
          max="1000000">10</param>
   <param name="hexsize" type="string"
-        _gui-text ="Hex Size (optional)"></param>
+        gui-text ="Hex Size (optional)"></param>
   <param name="strokewidth" type="string"
 	_gui-text ="Stroke Width">1pt</param>
   <param name="verticesize" type="int" min="0" max="50"
-        _gui-text="Size of vertices (%)">10</param>
+        gui-text="Size of vertices (%)">10</param>
 </page>
 
 <page name="page_2" gui-text="Style">
   <param name="bricks" type="boolean"
-        _gui-text="Bricks">false</param>
+        gui-text="Bricks">false</param>
   <param name="squarebricks" type="boolean"
-        _gui-text="  Force Square Bricks">false</param>
+        gui-text="  Force Square Bricks">false</param>
   <param name="rotate" type="boolean"
-        _gui-text="Rotate">false</param>
+        gui-text="Rotate">false</param>
   <param name="halfhexes" type="boolean"
-        _gui-text="Half hexes at top and bottom">false</param>
+        gui-text="Half hexes at top and bottom">false</param>
   <param name="xshift" type="boolean"
-        _gui-text="Shift grid to side and wrap">false</param>
+        gui-text="Shift grid to side and wrap">false</param>
   <param name="firstcoldown" type="boolean"
-        _gui-text="First column half-hex down">false</param>
+        gui-text="First column half-hex down">false</param>
 </page>
 
 <page name="page_3" gui-text="Coords">
   <param name="coordseparator" type="string"
-        _gui-text="Coordinate Separator">.</param>
+        gui-text="Coordinate Separator">.</param>
   <param name="coordalphacol" type="boolean"
-        _gui-text="Column Alpha Coordinates">false</param>
+        gui-text="Column Alpha Coordinates">false</param>
   <param name="coordrevrow" type="boolean"
-        _gui-text="Row Coordinates Reversed">false</param>
+        gui-text="Row Coordinates Reversed">false</param>
   <param name="coordrowfirst" type="boolean"
-        _gui-text="Row Coordinate First">false</param>
+        gui-text="Row Coordinate First">false</param>
   <param name="coordzeros" type="boolean"
-        _gui-text="Zero-Padded Coordinates">true</param>
+        gui-text="Zero-Padded Coordinates">true</param>
   <param name="coordrows" type="int" min="1" max="100"
-        _gui-text="Coordinates Every ... Rows">1</param>
-  <param name="coordcolstart" type="int" _gui-text="First Col Nr" min="0"
+        gui-text="Coordinates Every ... Rows">1</param>
+  <param name="coordcolstart" type="int" gui-text="First Col Nr" min="0"
         max="1000">1</param>
-  <param name="coordrowstart" type="int" _gui-text="First Row Nr" min="0"
+  <param name="coordrowstart" type="int" gui-text="First Row Nr" min="0"
         max="1000">1</param>
 </page>
 
 <page name="page_4" gui-text="Layers">
-  <param name="layer-grid" type="boolean"
-         _gui-text="Grid">true</param>
-  <param name="layer-fill" type="boolean"
-         _gui-text="Fill">true</param>
-  <param name="layer-coordinates" type="boolean"
-         _gui-text="Coordinates">true</param>
-  <param name="layer-centerdots" type="boolean"
-         _gui-text="Centerdots">true</param>
-  <param name="layer-vertices" type="boolean"
-         _gui-text="Vertices">false</param>
-  <param name="layer-circles" type="boolean"
-         _gui-text="Circles">false</param>
-  <param name="layers-in-group" type="boolean"
-         _gui-text="Layers in Group">false</param>
+  <param name="layergrid" type="boolean"
+         gui-text="Grid">true</param>
+  <param name="layerfill" type="boolean"
+         gui-text="Fill">true</param>
+  <param name="layercoordinates" type="boolean"
+         gui-text="Coordinates">true</param>
+  <param name="layercenterdots" type="boolean"
+         gui-text="Centerdots">true</param>
+  <param name="layervertices" type="boolean"
+         gui-text="Vertices">false</param>
+  <param name="layercircles" type="boolean"
+         gui-text="Circles">false</param>
+  <param name="layersingroup" type="boolean"
+         gui-text="Layers in Group">false</param>
 </page>
 
 <page name="page_5" gui-text="Debug">
-    <param name="log" type="string" _gui-text="Log File (optional)"></param>
+    <param name="log" type="string" gui-text="Log File (optional)"></param>
 </page>
 
 </param>
@@ -80,7 +80,7 @@
 <effect>
     <object-type>all</object-type>
     <effects-menu>
-       <submenu _name="Boardgames"/>
+       <submenu name="Boardgames"/>
     </effects-menu>
   </effect>
   <script>
