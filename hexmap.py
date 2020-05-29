@@ -54,7 +54,7 @@ class HexmapEffect(inkex.Effect):
         if not hasattr(self, 'unittouu'):
             self.svg.unittouu = inkex.unittouu
         self.log = False
-        self.arg_parser.add_argument("--tab",  action="store", type=str,
+        self.arg_parser.add_argument("--tab", type=str,
                                      dest="tab")
         self.arg_parser.add_argument('-l', '--log',
                                      type = str, dest = 'logfile')
