@@ -52,88 +52,80 @@ class HexmapEffect(inkex.Effect):
         inkex.Effect.__init__(self)
         # quick attempt compatibility with Inkscape older than 0.91:
         if not hasattr(self, 'unittouu'):
-            self.unittouu = inkex.unittouu
+            self.svg.unittouu = inkex.unittouu
         self.log = False
-        self.OptionParser.add_option("--tab",  action="store", type="string",
+        self.arg_parser.add_argument("--tab",  action="store", type=str,
                                      dest="tab")
-        self.OptionParser.add_option('-l', '--log', action = 'store',
-                                     type = 'string', dest = 'logfile')
-        self.OptionParser.add_option('-c', '--cols', action = 'store',
-                                     type = 'int', dest = 'cols',
+        self.arg_parser.add_argument('-l', '--log',
+                                     type = str, dest = 'logfile')
+        self.arg_parser.add_argument('-c', '--cols',
+                                     type = int, dest = 'cols',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.OptionParser.add_option('-r', '--rows', action = 'store',
-                                     type = 'int', dest = 'rows',
+        self.arg_parser.add_argument('-r', '--rows',
+                                     type = int, dest = 'rows',
                                      default = '10',
                                      help = 'Number of columns.')
-        self.OptionParser.add_option('-z', '--hexsize',
-                                     action = 'store', default = "",
-                                     type = 'string', dest = 'hexsize')
-        self.OptionParser.add_option('-w', '--strokewidth',
-                                     action = 'store', default = "1pt",
-                                     type = 'string', dest = 'strokewidth')
-        self.OptionParser.add_option('-O', '--coordrows', action = 'store',
-                                     type = 'int', dest = 'coordrows',
+        self.arg_parser.add_argument('-z', '--hexsize',
+                                     default = "",
+                                     type = str, dest = 'hexsize')
+        self.arg_parser.add_argument('-w', '--strokewidth',
+                                     default = "1pt",
+                                     type = str, dest = 'strokewidth')
+        self.arg_parser.add_argument('-O', '--coordrows',
+                                     type = int, dest = 'coordrows',
                                      default = '1')
-        self.OptionParser.add_option('-s', '--coordcolstart',
-                                     action = 'store',
-                                     type = 'int', dest = 'coordcolstart',
+        self.arg_parser.add_argument('-s', '--coordcolstart',
+                                     type = int, dest = 'coordcolstart',
                                      default = '1')
-        self.OptionParser.add_option('-o', '--coordrowstart',
-                                     action = 'store',
-                                     type = 'int', dest = 'coordrowstart',
+        self.arg_parser.add_argument('-o', '--coordrowstart',
+                                     type = int, dest = 'coordrowstart',
                                      default = '1')
-        self.OptionParser.add_option('-b', '--bricks',
-                                     action = 'store',
-                                     type = 'string',
+        self.arg_parser.add_argument('-b', '--bricks',
+                                     type = str,
                                      dest = 'bricks',
                                      default = False)
-        self.OptionParser.add_option('-S', '--squarebricks',
-                                     action = 'store',
-                                     type = 'string',
+        self.arg_parser.add_argument('-S', '--squarebricks',
+                                     type = str,
                                      dest = 'squarebricks',
                                      default = False)
-        self.OptionParser.add_option('-t', '--rotate',
-                                     action = 'store',
-                                     type = 'string',
+        self.arg_parser.add_argument('-t', '--rotate',
+                                     type = str,
                                      dest = 'rotate',
                                      default = False)
-        self.OptionParser.add_option('-C', '--coordseparator',
-                                     action = 'store',
+        self.arg_parser.add_argument('-C', '--coordseparator',
                                      default = '',
-                                     type = 'string',
+                                     type = str,
                                      dest = 'coordseparator')
-        self.OptionParser.add_option('-G', '--layers-in-group',
-                                     action = 'store',
+        self.arg_parser.add_argument('-G', '--layers-in-group',
                                      dest = 'layersingroup', default = False,
                                      help = "Put all layers in a layer group.")
-        self.OptionParser.add_option('-A', '--coordalphacol', action = 'store',
+        self.arg_parser.add_argument('-A', '--coordalphacol',
                                      dest = 'coordalphacol', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-R', '--coordrevrow', action = 'store',
+        self.arg_parser.add_argument('-R', '--coordrevrow',
                                      dest = 'coordrevrow', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-Z', '--coordzeros', action = 'store',
+        self.arg_parser.add_argument('-Z', '--coordzeros',
                                      dest = 'coordzeros', default = True)
-        self.OptionParser.add_option('-F', '--coordrowfirst', action = 'store',
+        self.arg_parser.add_argument('-F', '--coordrowfirst',
                                      dest = 'coordrowfirst', default = False,
                                      help = "Reverse row coordinates.")
-        self.OptionParser.add_option('-X', '--xshift', action = 'store',
+        self.arg_parser.add_argument('-X', '--xshift',
                                      dest = 'xshift', default = False,
                                      help = "Shift grid half hex and wrap.")
-        self.OptionParser.add_option('-f', '--firstcoldown', action = 'store',
+        self.arg_parser.add_argument('-f', '--firstcoldown',
                                      dest = 'firstcoldown', default = False,
                                      help = "Make first column half-hex down.")
-        self.OptionParser.add_option('-H', '--halfhexes', action = 'store',
+        self.arg_parser.add_argument('-H', '--halfhexes',
                                      dest = 'halfhexes', default = False)
-        self.OptionParser.add_option('-Q', '--verticesize',
-                                     action = 'store',
+        self.arg_parser.add_argument('-Q', '--verticesize',
                                      dest = 'verticesize', default = 1,
-                                     type = 'int')
+                                     type = int)
         for layer in LAYERS:
-            self.OptionParser.add_option('--layer-' + layer,
+            self.arg_parser.add_argument('--layer-' + layer,
                                         default = "false",
-                                        dest = layer, action = 'store')
+                                        dest = layer)
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -290,8 +282,8 @@ class HexmapEffect(inkex.Effect):
         self.stroke_width = self.parse_float_with_unit(
             self.options.strokewidth, "stroke width")
 
-        width = float(self.unittouu(svg.get('width'))) - self.stroke_width
-        height = float(self.unittouu(svg.get('height'))) - self.stroke_width
+        width = float(self.svg.unittouu(svg.get('width'))) - self.stroke_width
+        height = float(self.svg.unittouu(svg.get('height'))) - self.stroke_width
 
         # So I was a bit lazy and only added an offset to all the
         # svg_* functions to compensate for the stroke width.
@@ -367,14 +359,14 @@ class HexmapEffect(inkex.Effect):
         # FIXME try to remember what 0.005 is for
         coord_yoffset = COORD_YOFFSET_PART * hex_height * 0.005
 
-        for col in xrange(cols + 1):
+        for col in range(cols + 1):
             cx = (2.0 + col * 3.0) * 0.25 * hex_width
             if xshift:
                 cx = cx - hex_width * 0.5
             coldown = col % 2
             if firstcoldown:
                 coldown = not coldown
-            for row in xrange(rows + 1):
+            for row in range(rows + 1):
                 cy = (0.5 + coldown * 0.5 + row) * hex_height
                 self.logwrite("col: %d, row: %d, c: %f %f\n" % (col, row,
                                                                 cx, cy))
@@ -486,7 +478,7 @@ class HexmapEffect(inkex.Effect):
 
     def parse_float_with_unit(self, value, name):
         try:
-            result = hex_width = self.unittouu(value.strip())
+            result = hex_width = self.svg.unittouu(value.strip())
         except:
             sys.exit("Failed to parse %s '%s'. Must be "
                      "digits followed by optional unit name "
@@ -506,4 +498,4 @@ class HexmapEffect(inkex.Effect):
                 svg.append(layer)
 
 effect = HexmapEffect()
-effect.affect()
+effect.run()
