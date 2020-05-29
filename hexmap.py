@@ -13,7 +13,7 @@ class Point:
         self.y = y
 
     def __str__(self):
-        return "%f,%f" % (self.x, self.y)
+        return '%f,%f' % (self.x, self.y)
 
     def y_mirror(self, h):
         return Point(self.x, h - self.y);
@@ -36,7 +36,7 @@ def nrdigits(f):
 def alphacol(c):
     d = c / 26
     r = c % 26
-    return ("%c" % (r + 65)) * (d + 1)
+    return ('%c' % (r + 65)) * (d + 1)
 
 def calc_hex_height(hex_width):
     return 0.25 * hex_width / math.tan(math.pi / 6) * 2
@@ -45,7 +45,7 @@ COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
 COORD_YOFFSET_PART = 75
 CENTERDOT_SIZE_FACTOR = 1.1690625
 
-LAYERS = ["grid", "centerdots", "vertices", "fill", "coordinates", "circles"]
+LAYERS = ['grid', 'centerdots', 'vertices', 'fill', 'coordinates', 'circles']
 
 class HexmapEffect(inkex.Effect):
     def __init__(self):
@@ -54,8 +54,8 @@ class HexmapEffect(inkex.Effect):
         if not hasattr(self, 'unittouu'):
             self.svg.unittouu = inkex.unittouu
         self.log = False
-        self.arg_parser.add_argument("--tab", type=str,
-                                     dest="tab")
+        self.arg_parser.add_argument('--tab', type=str,
+                                     dest='tab')
         self.arg_parser.add_argument('-l', '--log',
                                      type = str, dest = 'logfile')
         self.arg_parser.add_argument('-c', '--cols',
@@ -67,10 +67,10 @@ class HexmapEffect(inkex.Effect):
                                      default = '10',
                                      help = 'Number of columns.')
         self.arg_parser.add_argument('-z', '--hexsize',
-                                     default = "",
+                                     default = '',
                                      type = str, dest = 'hexsize')
         self.arg_parser.add_argument('-w', '--strokewidth',
-                                     default = "1pt",
+                                     default = '1pt',
                                      type = str, dest = 'strokewidth')
         self.arg_parser.add_argument('-O', '--coordrows',
                                      type = int, dest = 'coordrows',
@@ -99,24 +99,24 @@ class HexmapEffect(inkex.Effect):
                                      dest = 'coordseparator')
         self.arg_parser.add_argument('-G', '--layers-in-group',
                                      dest = 'layersingroup', default = False,
-                                     help = "Put all layers in a layer group.")
+                                     help = 'Put all layers in a layer group.')
         self.arg_parser.add_argument('-A', '--coordalphacol',
                                      dest = 'coordalphacol', default = False,
-                                     help = "Reverse row coordinates.")
+                                     help = 'Reverse row coordinates.')
         self.arg_parser.add_argument('-R', '--coordrevrow',
                                      dest = 'coordrevrow', default = False,
-                                     help = "Reverse row coordinates.")
+                                     help = 'Reverse row coordinates.')
         self.arg_parser.add_argument('-Z', '--coordzeros',
                                      dest = 'coordzeros', default = True)
         self.arg_parser.add_argument('-F', '--coordrowfirst',
                                      dest = 'coordrowfirst', default = False,
-                                     help = "Reverse row coordinates.")
+                                     help = 'Reverse row coordinates.')
         self.arg_parser.add_argument('-X', '--xshift',
                                      dest = 'xshift', default = False,
-                                     help = "Shift grid half hex and wrap.")
+                                     help = 'Shift grid half hex and wrap.')
         self.arg_parser.add_argument('-f', '--firstcoldown',
                                      dest = 'firstcoldown', default = False,
-                                     help = "Make first column half-hex down.")
+                                     help = 'Make first column half-hex down.')
         self.arg_parser.add_argument('-H', '--halfhexes',
                                      dest = 'halfhexes', default = False)
         self.arg_parser.add_argument('-Q', '--verticesize',
@@ -124,7 +124,7 @@ class HexmapEffect(inkex.Effect):
                                      type = int)
         for layer in LAYERS:
             self.arg_parser.add_argument('--layer-' + layer,
-                                        default = "false",
+                                        default = 'false',
                                         dest = layer)
 
     def createLayer(self, name):
@@ -141,34 +141,34 @@ class HexmapEffect(inkex.Effect):
 
     def svg_line(self, p1, p2):
         line = etree.Element('line')
-        line.set("x1", str(p1.x + self.xoffset))
-        line.set("y1", str(p1.y + self.yoffset))
-        line.set("x2", str(p2.x + self.xoffset))
-        line.set("y2", str(p2.y + self.yoffset))
-        line.set("stroke", "black")
-        line.set("stroke-width", str(self.stroke_width))
-        line.set("stroke-linecap", "round")
+        line.set('x1', str(p1.x + self.xoffset))
+        line.set('y1', str(p1.y + self.yoffset))
+        line.set('x2', str(p2.x + self.xoffset))
+        line.set('y2', str(p2.y + self.yoffset))
+        line.set('stroke', 'black')
+        line.set('stroke-width', str(self.stroke_width))
+        line.set('stroke-linecap', 'round')
         return line
 
     def svg_circle(self, p, radius):
-        circle = etree.Element("circle")
-        circle.set("cx", str(p.x + self.xoffset))
-        circle.set("cy", str(p.y + self.yoffset))
-        circle.set("r", str(radius))
-        circle.set("fill", "black")
+        circle = etree.Element('circle')
+        circle.set('cx', str(p.x + self.xoffset))
+        circle.set('cy', str(p.y + self.yoffset))
+        circle.set('r', str(radius))
+        circle.set('fill', 'black')
         return circle
 
     def svg_polygon(self, points):
-        poly = etree.Element("polygon")
+        poly = etree.Element('polygon')
         pointsdefa = []
         for p in points:
             offset_p = Point(p.x + self.xoffset, p.y + self.yoffset)
             pointsdefa.append(str(offset_p))
-        pointsdef = " ".join(pointsdefa)
-        poly.set("points", pointsdef)
-        poly.set("style", "stroke:none;fill:#ffffff;fill-opacity:1")
-        poly.set("stroke-width", str(self.stroke_width))
-        poly.set("stroke-linecap", "round")
+        pointsdef = ' '.join(pointsdefa)
+        poly.set('points', pointsdef)
+        poly.set('style', 'stroke:none;fill:#ffffff;fill-opacity:1')
+        poly.set('stroke-width', str(self.stroke_width))
+        poly.set('stroke-linecap', 'round')
         return poly
 
     def svg_coord(self, p, col, row, cols, rows, anchor='middle'):
@@ -203,11 +203,11 @@ class HexmapEffect(inkex.Effect):
         else:
             coord = str(col) + self.coordseparator + str(row)
 
-        self.logwrite(" coord-> '%s'\n" % (coord))
+        self.logwrite(' coord-> '%s'\n' % (coord))
         text = etree.Element('text')
         text.set('x', str(p.x + self.xoffset))
         text.set('y', str(p.y + self.yoffset))
-        style = ("text-align:center;text-anchor:%s;font-size:%fpt"
+        style = ('text-align:center;text-anchor:%s;font-size:%fpt'
                  % (anchor, self.coordsize))
         text.set('style', style)
         text.text = coord
@@ -227,32 +227,32 @@ class HexmapEffect(inkex.Effect):
 
         cols = self.options.cols
         rows = self.options.rows
-        halves = self.options.halfhexes == "true"
-        xshift = self.options.xshift == "true"
-        firstcoldown = self.options.firstcoldown == "true"
-        bricks = self.options.bricks == "true"
-        squarebricks = self.options.squarebricks == "true"
-        rotate = self.options.rotate == "true"
-        layersingroup = self.options.layersingroup == "true"
+        halves = self.options.halfhexes == 'true'
+        xshift = self.options.xshift == 'true'
+        firstcoldown = self.options.firstcoldown == 'true'
+        bricks = self.options.bricks == 'true'
+        squarebricks = self.options.squarebricks == 'true'
+        rotate = self.options.rotate == 'true'
+        layersingroup = self.options.layersingroup == 'true'
 
         self.coordseparator = self.options.coordseparator
         if self.coordseparator == None:
-            self.coordseparator = ""
-        self.coordrevrow = self.options.coordrevrow == "true"
+            self.coordseparator = ''
+        self.coordrevrow = self.options.coordrevrow == 'true'
         self.coordrevcol = False
-        self.coordalphacol = self.options.coordalphacol == "true"
+        self.coordalphacol = self.options.coordalphacol == 'true'
         self.coordrows = self.options.coordrows
-        self.coordrowfirst = self.options.coordrowfirst == "true"
-        self.coordzeros = self.options.coordzeros == "true"
+        self.coordrowfirst = self.options.coordrowfirst == 'true'
+        self.coordzeros = self.options.coordzeros == 'true'
 
         self.enabled_layers = set()
 
         for layer in LAYERS:
-            if getattr(self.options, layer) == "true":
+            if getattr(self.options, layer) == 'true':
                 self.enabled_layers.add(layer)
 
         if len(self.enabled_layers) == 0:
-            raise ValueError("No layers are enabled.")
+            raise ValueError('No layers are enabled.')
 
         if rotate:
             self.coordrowfirst = not self.coordrowfirst
@@ -260,9 +260,9 @@ class HexmapEffect(inkex.Effect):
             self.coordrevrow = False
 
         self.verticesize = self.options.verticesize / 100.0
-        self.logwrite("verticesize: %f\n" % self.verticesize)
+        self.logwrite('verticesize: %f\n' % self.verticesize)
         if self.verticesize < 0.01 or self.verticesize > 0.5:
-            self.logwrite("verticesize out of range\n")
+            self.logwrite('verticesize out of range\n')
             self.verticesize = 0.15
 
         self.coldigits = nrdigits(cols + self.options.coordcolstart)
@@ -274,13 +274,13 @@ class HexmapEffect(inkex.Effect):
         if self.coordrowfirst:
             self.coldigits,self.rowdigits = [self.rowdigits,self.coldigits]
 
-        self.logwrite("cols: %d, rows: %d\n" % (cols, rows))
-        self.logwrite("xshift: %s, halves: %s\n" % (str(xshift), str(halves)))
+        self.logwrite('cols: %d, rows: %d\n' % (cols, rows))
+        self.logwrite('xshift: %s, halves: %s\n' % (str(xshift), str(halves)))
 
         svg = self.document.xpath('//svg:svg' , namespaces=NSS)[0]
 
         self.stroke_width = self.parse_float_with_unit(
-            self.options.strokewidth, "stroke width")
+            self.options.strokewidth, 'stroke width')
 
         width = float(self.svg.unittouu(svg.get('width'))) - self.stroke_width
         height = float(self.svg.unittouu(svg.get('height'))) - self.stroke_width
@@ -293,34 +293,34 @@ class HexmapEffect(inkex.Effect):
 
         # FIXME there is room for improvement here
         if 'grid' in self.enabled_layers:
-            hexgrid = self.createLayer("Hex Grid")
+            hexgrid = self.createLayer('Hex Grid')
         else:
             hexgrid = None
         if 'centerdots' in self.enabled_layers:
-            hexdots = self.createLayer("Hex Centerdots")
+            hexdots = self.createLayer('Hex Centerdots')
         else:
             hexdots = None
         if 'vertices' in self.enabled_layers:
-            hexvertices = self.createLayer("Hex Vertices")
+            hexvertices = self.createLayer('Hex Vertices')
         else:
             hexvertices = None
         if 'fill' in self.enabled_layers:
-            hexfill = self.createLayer("Hex Fill")
+            hexfill = self.createLayer('Hex Fill')
         else:
             hexfill = None
         if 'coordinates' in self.enabled_layers:
-            hexcoords = self.createLayer("Hex Coordinates")
+            hexcoords = self.createLayer('Hex Coordinates')
         else:
             hexcoords = None
         if 'circles' in self.enabled_layers:
-            hexcircles = self.createLayer("Hex Circles")
+            hexcircles = self.createLayer('Hex Circles')
         else:
             hexcircles = None
 
         if hexvertices is not None and hexgrid is not None:
-            hexgrid.set("style", "display:none")
+            hexgrid.set('style', 'display:none')
 
-        self.logwrite("w, h : %f, %f\n" % (width, height))
+        self.logwrite('w, h : %f, %f\n' % (width, height))
 
         if xshift:
             hex_cols = (cols * 3.0) * 0.25
@@ -334,9 +334,9 @@ class HexmapEffect(inkex.Effect):
 
         hex_width = width / hex_cols
 
-        if self.options.hexsize and self.options.hexsize != "":
+        if self.options.hexsize and self.options.hexsize != '':
             hex_width = self.parse_float_with_unit(self.options.hexsize,
-                                                   "hex size")
+                                                   'hex size')
         hex_height = calc_hex_height(hex_width)
 
         # square bricks workaround
@@ -353,7 +353,7 @@ class HexmapEffect(inkex.Effect):
         self.centerdotsize = self.stroke_width * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
-        self.logwrite("hex_width: %f, hex_height: %f\n" %(hex_width,
+        self.logwrite('hex_width: %f, hex_height: %f\n' %(hex_width,
                                                           hex_height))
 
         # FIXME try to remember what 0.005 is for
@@ -368,7 +368,7 @@ class HexmapEffect(inkex.Effect):
                 coldown = not coldown
             for row in range(rows + 1):
                 cy = (0.5 + coldown * 0.5 + row) * hex_height
-                self.logwrite("col: %d, row: %d, c: %f %f\n" % (col, row,
+                self.logwrite('col: %d, row: %d, c: %f %f\n' % (col, row,
                                                                 cx, cy))
                 c = Point(cx, cy)
                 if rotate:
@@ -387,7 +387,7 @@ class HexmapEffect(inkex.Effect):
                 if (hexdots is not None
                     and (col < cols or xshift) and row < rows):
                     cd = self.svg_circle(c, self.centerdotsize)
-                    cd.set('id', "hexcenter_%d_%d"
+                    cd.set('id', 'hexcenter_%d_%d'
                            % (col + self.options.coordcolstart,
                               row + self.options.coordrowstart))
                     hexdots.append(cd)
@@ -395,7 +395,7 @@ class HexmapEffect(inkex.Effect):
                 if (hexcircles is not None and (col < cols or xshift)
                     and row < rows):
                     el = self.svg_circle(c, self.circlesize)
-                    el.set('id', "hexcircle_%d_%d"
+                    el.set('id', 'hexcircle_%d_%d'
                            % (col + self.options.coordcolstart,
                               row + self.options.coordrowstart))
                     hexcircles.append(el)
@@ -437,7 +437,7 @@ class HexmapEffect(inkex.Effect):
                     if halves and coldown and row == rows - 1:
                         p2 = [x.y_mirror(hexes_height) for x in p]
                         sp = self.svg_polygon(p)
-                    sp.set('id', "hexfill_%d_%d"
+                    sp.set('id', 'hexfill_%d_%d'
                            % (col + self.options.coordcolstart,
                               row + self.options.coordrowstart))
                     hexfill.append(sp)
@@ -446,28 +446,28 @@ class HexmapEffect(inkex.Effect):
                     or (xshift and col == cols
                         and not (halves and row == rows))):
                     self.add_hexline(hexgrid, hexvertices, p[5], p[0])
-                    self.logwrite("line 0-5\n")
+                    self.logwrite('line 0-5\n')
                 if row < rows:
                     if ((coldown or row > 0 or col < cols
                          or halves or xshift)
                         and not (xshift and col == 0)):
                         self.add_hexline(hexgrid, hexvertices, p[5], p[4])
-                        self.logwrite("line 4-5\n")
+                        self.logwrite('line 4-5\n')
                     if not coldown and row == 0 and col < cols:
                         self.add_hexline(hexgrid, hexvertices, p[0], p[1])
-                        self.logwrite("line 0-1\n")
+                        self.logwrite('line 0-1\n')
                     if not (halves and coldown and row == rows-1):
                         if (not (xshift and col == 0)
                             and not (not xshift and col == cols
                                      and row == rows-1 and coldown)):
                             self.add_hexline(hexgrid, hexvertices, p[4], p[3])
-                            self.logwrite("line 3-4\n")
+                            self.logwrite('line 3-4\n')
                         if coldown and row == rows - 1 and col < cols:
                             self.add_hexline(hexgrid, hexvertices, p[1], p[2])
-                            self.logwrite("line 1-2\n")
+                            self.logwrite('line 1-2\n')
         parent = svg
         if layersingroup:
-            parent = self.createLayer("Hex Map")
+            parent = self.createLayer('Hex Map')
             self.append_if_new_name(svg, parent)
         self.append_if_new_name(parent, hexfill)
         self.append_if_new_name(parent, hexcircles)
@@ -480,14 +480,14 @@ class HexmapEffect(inkex.Effect):
         try:
             result = hex_width = self.svg.unittouu(value.strip())
         except:
-            sys.exit("Failed to parse %s '%s'. Must be "
-                     "digits followed by optional unit name "
-                     "(e.g. mm, cm, in, pt). If no unit is "
-                     "named the default will be whatever the "
-                     "default units for the document is."
+            sys.exit('Failed to parse %s '%s'. Must be '
+                     'digits followed by optional unit name '
+                     '(e.g. mm, cm, in, pt). If no unit is '
+                     'named the default will be whatever the '
+                     'default units for the document is.'
                      % (name, value))
         if result <= 0:
-            sys.exit("%s must be positive" % name)
+            sys.exit('%s must be positive' % name)
         return result
 
     def append_if_new_name(self, svg, layer):
