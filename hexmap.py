@@ -52,80 +52,165 @@ class HexmapEffect(inkex.Effect):
         inkex.Effect.__init__(self)
         # quick attempt compatibility with Inkscape older than 0.91:
         if not hasattr(self, 'unittouu'):
-            self.svg.unittouu = inkex.unittouu
+            self.unittouu = inkex.unittouu
+        # quick attempt compatibility with Inkscape 1.0
+        if hasattr(self, 'svg'):
+            self.unittouu = self.svg.unittouu
         self.log = False
-        self.arg_parser.add_argument('--tab', type=str,
+        if hasattr(self, 'arg_parser'):
+            self.arg_parser.add_argument('--tab', type=str,
+                                         dest='tab')
+            self.arg_parser.add_argument('-l', '--log',
+                                         type = str, dest = 'logfile')
+            self.arg_parser.add_argument('-c', '--cols',
+                                         type = int, dest = 'cols',
+                                         default = '10',
+                                         help = 'Number of columns.')
+            self.arg_parser.add_argument('-r', '--rows',
+                                         type = int, dest = 'rows',
+                                         default = '10',
+                                         help = 'Number of columns.')
+            self.arg_parser.add_argument('-z', '--hexsize',
+                                         default = '',
+                                         type = str, dest = 'hexsize')
+            self.arg_parser.add_argument('-w', '--strokewidth',
+                                         default = '1pt',
+                                         type = str, dest = 'strokewidth')
+            self.arg_parser.add_argument('-O', '--coordrows',
+                                         type = int, dest = 'coordrows',
+                                         default = '1')
+            self.arg_parser.add_argument('-s', '--coordcolstart',
+                                         type = int, dest = 'coordcolstart',
+                                         default = '1')
+            self.arg_parser.add_argument('-o', '--coordrowstart',
+                                         type = int, dest = 'coordrowstart',
+                                         default = '1')
+            self.arg_parser.add_argument('-b', '--bricks',
+                                         type = str,
+                                         dest = 'bricks',
+                                         default = False)
+            self.arg_parser.add_argument('-S', '--squarebricks',
+                                         type = str,
+                                         dest = 'squarebricks',
+                                         default = False)
+            self.arg_parser.add_argument('-t', '--rotate',
+                                         type = str,
+                                         dest = 'rotate',
+                                         default = False)
+            self.arg_parser.add_argument('-C', '--coordseparator',
+                                         default = '',
+                                         type = str,
+                                         dest = 'coordseparator')
+            self.arg_parser.add_argument('-G', '--layers-in-group',
+                                         dest = 'layersingroup', default = False,
+                                         help = 'Put all layers in a layer group.')
+            self.arg_parser.add_argument('-A', '--coordalphacol',
+                                         dest = 'coordalphacol', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.arg_parser.add_argument('-R', '--coordrevrow',
+                                         dest = 'coordrevrow', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.arg_parser.add_argument('-Z', '--coordzeros',
+                                         dest = 'coordzeros', default = True)
+            self.arg_parser.add_argument('-F', '--coordrowfirst',
+                                         dest = 'coordrowfirst', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.arg_parser.add_argument('-X', '--xshift',
+                                         dest = 'xshift', default = False,
+                                         help = 'Shift grid half hex and wrap.')
+            self.arg_parser.add_argument('-f', '--firstcoldown',
+                                         dest = 'firstcoldown', default = False,
+                                         help = 'Make first column half-hex down.')
+            self.arg_parser.add_argument('-H', '--halfhexes',
+                                         dest = 'halfhexes', default = False)
+            self.arg_parser.add_argument('-Q', '--verticesize',
+                                         dest = 'verticesize', default = 1,
+                                         type = int)
+            for layer in LAYERS:
+                self.arg_parser.add_argument('--layer-' + layer,
+                                            default = 'false',
+                                            dest = layer)
+        else:
+            self.OptionParser.add_option('--tab',  action='store', type='string',
                                      dest='tab')
-        self.arg_parser.add_argument('-l', '--log',
-                                     type = str, dest = 'logfile')
-        self.arg_parser.add_argument('-c', '--cols',
-                                     type = int, dest = 'cols',
-                                     default = '10',
-                                     help = 'Number of columns.')
-        self.arg_parser.add_argument('-r', '--rows',
-                                     type = int, dest = 'rows',
-                                     default = '10',
-                                     help = 'Number of columns.')
-        self.arg_parser.add_argument('-z', '--hexsize',
-                                     default = '',
-                                     type = str, dest = 'hexsize')
-        self.arg_parser.add_argument('-w', '--strokewidth',
-                                     default = '1pt',
-                                     type = str, dest = 'strokewidth')
-        self.arg_parser.add_argument('-O', '--coordrows',
-                                     type = int, dest = 'coordrows',
-                                     default = '1')
-        self.arg_parser.add_argument('-s', '--coordcolstart',
-                                     type = int, dest = 'coordcolstart',
-                                     default = '1')
-        self.arg_parser.add_argument('-o', '--coordrowstart',
-                                     type = int, dest = 'coordrowstart',
-                                     default = '1')
-        self.arg_parser.add_argument('-b', '--bricks',
-                                     type = str,
-                                     dest = 'bricks',
-                                     default = False)
-        self.arg_parser.add_argument('-S', '--squarebricks',
-                                     type = str,
-                                     dest = 'squarebricks',
-                                     default = False)
-        self.arg_parser.add_argument('-t', '--rotate',
-                                     type = str,
-                                     dest = 'rotate',
-                                     default = False)
-        self.arg_parser.add_argument('-C', '--coordseparator',
-                                     default = '',
-                                     type = str,
-                                     dest = 'coordseparator')
-        self.arg_parser.add_argument('-G', '--layers-in-group',
-                                     dest = 'layersingroup', default = False,
-                                     help = 'Put all layers in a layer group.')
-        self.arg_parser.add_argument('-A', '--coordalphacol',
-                                     dest = 'coordalphacol', default = False,
-                                     help = 'Reverse row coordinates.')
-        self.arg_parser.add_argument('-R', '--coordrevrow',
-                                     dest = 'coordrevrow', default = False,
-                                     help = 'Reverse row coordinates.')
-        self.arg_parser.add_argument('-Z', '--coordzeros',
-                                     dest = 'coordzeros', default = True)
-        self.arg_parser.add_argument('-F', '--coordrowfirst',
-                                     dest = 'coordrowfirst', default = False,
-                                     help = 'Reverse row coordinates.')
-        self.arg_parser.add_argument('-X', '--xshift',
-                                     dest = 'xshift', default = False,
-                                     help = 'Shift grid half hex and wrap.')
-        self.arg_parser.add_argument('-f', '--firstcoldown',
-                                     dest = 'firstcoldown', default = False,
-                                     help = 'Make first column half-hex down.')
-        self.arg_parser.add_argument('-H', '--halfhexes',
-                                     dest = 'halfhexes', default = False)
-        self.arg_parser.add_argument('-Q', '--verticesize',
-                                     dest = 'verticesize', default = 1,
-                                     type = int)
-        for layer in LAYERS:
-            self.arg_parser.add_argument('--layer-' + layer,
-                                        default = 'false',
-                                        dest = layer)
+            self.OptionParser.add_option('-l', '--log', action = 'store',
+                                         type = 'string', dest = 'logfile')
+            self.OptionParser.add_option('-c', '--cols', action = 'store',
+                                         type = 'int', dest = 'cols',
+                                         default = '10',
+                                         help = 'Number of columns.')
+            self.OptionParser.add_option('-r', '--rows', action = 'store',
+                                         type = 'int', dest = 'rows',
+                                         default = '10',
+                                         help = 'Number of columns.')
+            self.OptionParser.add_option('-z', '--hexsize',
+                                         action = 'store', default = '',
+                                         type = 'string', dest = 'hexsize')
+            self.OptionParser.add_option('-w', '--strokewidth',
+                                         action = 'store', default = "1pt",
+                                         type = 'string', dest = 'strokewidth')
+            self.OptionParser.add_option('-O', '--coordrows', action = 'store',
+                                         type = 'int', dest = 'coordrows',
+                                         default = '1')
+            self.OptionParser.add_option('-s', '--coordcolstart',
+                                         action = 'store',
+                                         type = 'int', dest = 'coordcolstart',
+                                         default = '1')
+            self.OptionParser.add_option('-o', '--coordrowstart',
+                                         action = 'store',
+                                         type = 'int', dest = 'coordrowstart',
+                                         default = '1')
+            self.OptionParser.add_option('-b', '--bricks',
+                                         action = 'store',
+                                         type = 'string',
+                                         dest = 'bricks',
+                                         default = False)
+            self.OptionParser.add_option('-S', '--squarebricks',
+                                         action = 'store',
+                                         type = 'string',
+                                         dest = 'squarebricks',
+                                         default = False)
+            self.OptionParser.add_option('-t', '--rotate',
+                                         action = 'store',
+                                         type = 'string',
+                                         dest = 'rotate',
+                                         default = False)
+            self.OptionParser.add_option('-C', '--coordseparator',
+                                         action = 'store',
+                                         default = '',
+                                         type = 'string',
+                                         dest = 'coordseparator')
+            self.OptionParser.add_option('-G', '--layers-in-group',
+                                         action = 'store',
+                                         dest = 'layersingroup', default = False,
+                                         help = 'Put all layers in a layer group.')
+            self.OptionParser.add_option('-A', '--coordalphacol', action = 'store',
+                                         dest = 'coordalphacol', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.OptionParser.add_option('-R', '--coordrevrow', action = 'store',
+                                         dest = 'coordrevrow', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.OptionParser.add_option('-Z', '--coordzeros', action = 'store',
+                                         dest = 'coordzeros', default = True)
+            self.OptionParser.add_option('-F', '--coordrowfirst', action = 'store',
+                                         dest = 'coordrowfirst', default = False,
+                                         help = 'Reverse row coordinates.')
+            self.OptionParser.add_option('-X', '--xshift', action = 'store',
+                                         dest = 'xshift', default = False,
+                                         help = 'Shift grid half hex and wrap.')
+            self.OptionParser.add_option('-f', '--firstcoldown', action = 'store',
+                                         dest = 'firstcoldown', default = False,
+                                         help = 'Make first column half-hex down.')
+            self.OptionParser.add_option('-H', '--halfhexes', action = 'store',
+                                         dest = 'halfhexes', default = False)
+            self.OptionParser.add_option('-Q', '--verticesize',
+                                         action = 'store',
+                                         dest = 'verticesize', default = 1,
+                                         type = 'int')
+            for layer in LAYERS:
+                self.OptionParser.add_option('--layer-' + layer,
+                                            default = 'false',
+                                            dest = layer, action = 'store')
 
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
@@ -203,7 +288,7 @@ class HexmapEffect(inkex.Effect):
         else:
             coord = str(col) + self.coordseparator + str(row)
 
-        self.logwrite(' coord-> '%s'\n' % (coord))
+        self.logwrite(" coord-> '%s'\n" % (coord))
         text = etree.Element('text')
         text.set('x', str(p.x + self.xoffset))
         text.set('y', str(p.y + self.yoffset))
@@ -282,8 +367,8 @@ class HexmapEffect(inkex.Effect):
         self.stroke_width = self.parse_float_with_unit(
             self.options.strokewidth, 'stroke width')
 
-        width = float(self.svg.unittouu(svg.get('width'))) - self.stroke_width
-        height = float(self.svg.unittouu(svg.get('height'))) - self.stroke_width
+        width = float(self.unittouu(svg.get('width'))) - self.stroke_width
+        height = float(self.unittouu(svg.get('height'))) - self.stroke_width
 
         # So I was a bit lazy and only added an offset to all the
         # svg_* functions to compensate for the stroke width.
@@ -478,13 +563,13 @@ class HexmapEffect(inkex.Effect):
 
     def parse_float_with_unit(self, value, name):
         try:
-            result = hex_width = self.svg.unittouu(value.strip())
+            result = hex_width = self.unittouu(value.strip())
         except:
-            sys.exit('Failed to parse %s '%s'. Must be '
-                     'digits followed by optional unit name '
-                     '(e.g. mm, cm, in, pt). If no unit is '
-                     'named the default will be whatever the '
-                     'default units for the document is.'
+            sys.exit("Failed to parse %s '%s'. Must be "
+                     "digits followed by optional unit name "
+                     "(e.g. mm, cm, in, pt). If no unit is "
+                     "named the default will be whatever the "
+                     "default units for the document is."
                      % (name, value))
         if result <= 0:
             sys.exit('%s must be positive' % name)
@@ -498,4 +583,7 @@ class HexmapEffect(inkex.Effect):
                 svg.append(layer)
 
 effect = HexmapEffect()
-effect.run()
+if hasattr(effect, 'run'): # Use the Inkscape 1.0 syntax first
+    effect.run()
+else: # Likely Inkscape 0.9
+    effect.affect()
