@@ -1,6 +1,6 @@
 * Inkscape Hex Map Extension
 
- Copyright 2008-2019 Pelle Nilsson and contributors
+ Copyright 2008-2020 Pelle Nilsson and contributors
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -20,10 +20,7 @@
 This is an extension for creating hex grids in [[http://www.inkscape.org][Inkscape.]] It can also be used to
 make brick patterns of staggered rectangles.
 
-You need Inkscape 0.92 or later installed. But NOT 1.0 or later!
-**Inkscape 1.0 is not yet supported. Use an older version
-of Inkscape to use this extension.**
-
+You need Inkscape 0.92 or later installed.
 ** Installing
 To install the extension you need to copy *hexmap.inx*
 and *hexmap.py*
@@ -36,7 +33,6 @@ In Windows it will be something like
 Inkscape you should now have *Boardgames* submenu in the
 Extensions menu, and in that an entry for running
 *Generate Hex Map*.
-
 ** Running The Extension
 Creates a grid of hexagons over the document. Up to six layers
 are created:
@@ -47,7 +43,6 @@ are created:
 - *Hex Coordinates* The coordinate label of each hex. The format of each label is controlled by parameters in the effect's dialog window.
 - *Hex Corners* Corners/Vertices  of each hex only. Use as alternative to the normal hexgrid if you prefer a map with less visible grid. Some people call these caltrops.
 - *Hex Circles* Circles the size of each hex.
-
 ** User Guide
 There is a separate [[https://github.com/lifelike/hexmapextension/blob/master/USER%20GUIDE.md][User Guide]] document with much more information and help
 that is recommended reading for anyone about to use this extension or that
