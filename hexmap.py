@@ -34,7 +34,7 @@ def nrdigits(f):
 
 def alphacol(c):
     d = c / 26
-    r = c % 26   
+    r = c % 26
     return ('%c' % (r + 65)) * (int(d) + 1)
 
 def calc_hex_height(hex_width):
@@ -76,8 +76,8 @@ class HexmapEffect(inkex.Effect):
         self.arg_parser.add_argument('--layer_coordinates', type = inkex.Boolean, default = True)
         self.arg_parser.add_argument('--layer_centerdots', type = inkex.Boolean, default = True)
         self.arg_parser.add_argument('--layer_vertices', type = inkex.Boolean, default = False)
-        self.arg_parser.add_argument('--layer_circles', type = inkex.Boolean, default = False)        
-        
+        self.arg_parser.add_argument('--layer_circles', type = inkex.Boolean, default = False)
+
     def createLayer(self, name):
         layer = etree.Element(inkex.addNS('g', 'svg'))
         layer.set(inkex.addNS('label', 'inkscape'), name)
@@ -89,7 +89,7 @@ class HexmapEffect(inkex.Effect):
             log = open(self.options.logfilepath, 'w')
             log.write(msg)
             log.close()
-            
+
     def svg_line(self, p1, p2):
         line = etree.Element('line')
         line.set('x1', str(p1.x + self.xoffset))
@@ -227,7 +227,7 @@ class HexmapEffect(inkex.Effect):
         self.xoffset = self.stroke_width * 0.5
         self.yoffset = self.stroke_width * 0.5
 
-        if self.options.layer_grid: 
+        if self.options.layer_grid:
             hexgrid = self.createLayer('Hex Grid')
         else:
             hexgrid = None
