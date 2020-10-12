@@ -4,15 +4,18 @@ To use the Hex Map Extension, open "Extensions" in the Inkscape top menu and sel
 
 ## Size tab
 
+### Size Units
+The drop-down here sets the units (e.g. "in" or "mm") to use.
+
 ### number of rows, columns
 
 The number of rows (a row extends side-to-side) and columns (a column extends top-to-bottom) to be genrated.
 
 ### Hex Size
 
-The Hex Size field allows the user to specify the point-to-point width of the hexagon. The value can be followed by a unit, e.g. "in", "cm", "px", etc. The default unit is pixels. 
+The Hex Size field allows the user to specify the point-to-point width of the hexagon.
 
-If the hex size is left blank, the extension fits the specified number of hexes in so that they do not overflow in any direction. The lines have non-zero thickness, and are positioned using points in the middle of the line. When the extension caluculates the size based on the page size, it moves the hex vertices in so the line thickness fits inside the page limits. Depending on line thickness, the dimension of the "open" area of the hex will be slightly or substantially different from the hex size. The details of the calculation of the hex size are given in a [separate document](documentation/Calculated%20Hex%20Size.md).
+If the hex size is 0.0, the extension fits the specified number of hexes in so that they do not overflow in any direction. The lines have non-zero thickness, and are positioned using points in the middle of the line. When the extension caluculates the size based on the page size, it moves the hex vertices in so the line thickness fits inside the page limits. Depending on line thickness, the dimension of the "open" area of the hex will be slightly or substantially different from the hex size. The details of the calculation of the hex size are given in a [separate document](documentation/Calculated%20Hex%20Size.md).
 
 If the hex size is specified, the generated hexes can overflow the page.
 
@@ -85,7 +88,13 @@ This option generates a parent layer that contains the other generated layers. I
 
 
 ## Debug tab
-If the log file field is filled in, the extension will output debug text to the file. This probably should not be filled in unless you are fixing a problem or developing a new feature. 
+If the log file field is filled in, the extension will output debug text to the file. This probably should not be filled in unless you are fixing a problem or developing a new feature.
+
+### Generate Log File
+Log file is only created if this is checked.
+
+### Log File (optional)
+Set this to the file to create (the button can be clicked to open a file chooser). WARNING! THIS FILE WILL BE OVERWRITTEN IF IT EXISTS (NO QUESTIONS ASKED).
 
 ## "Apply" button
 
