@@ -24,12 +24,12 @@ if not os.path.exists(outputdir):
 chosen = [a for a in sys.argv[1:]
           if not a.startswith("-")]
 
-GRID = ["--layer-grid=true"]
-FILL = ["--layer-fill=true"]
-COORDINATES = ["--layer-coordinates=true"]
-CENTERDOTS = ["--layer-centerdots=true"]
-VERTICES = ["--layer-vertices=true"]
-CIRCLES = ["--layer-circles=true"]
+GRID = ["--layer_grid=true"]
+FILL = ["--layer_fill=true"]
+COORDINATES = ["--layer_coordinates=true"]
+CENTERDOTS = ["--layer_centerdots=true"]
+VERTICES = ["--layer_vertices=true"]
+CIRCLES = ["--layer_circles=true"]
 
 GROUP_LAYERS = ["--layers-in-group=true"]
 
@@ -44,11 +44,14 @@ DEFAULT_LAYERS = GRID + FILL + COORDINATES + CENTERDOTS
 ALL_LAYERS = DEFAULT_LAYERS + VERTICES + CIRCLES
 
 def cr(c, r):
-    return ["-c", str(c),
-            "-r", str(r)]
+    return ["--cols=" + str(c),
+            "--rows=" + str(r)]
 
 def hexsize(s):
-    return ['--hexsize=%s' % s]
+    return ['--hexsize=%f' % s]
+
+def units(u):
+    return ['--units=%s' % u]
 
 def verticesize(s):
     return ["--verticesize=%d" % s]
@@ -71,7 +74,11 @@ def coordcolstart(r):
 def coordrowstart(r):
     return ["--coordrowstart=%d" % r]
 
-DEFAULTS = ALL_LAYERS + cr(4,4) + verticesize(5) + hexsize("1in")
+DEFAULTS = (ALL_LAYERS
+                + cr(4,4)
+                + verticesize(5)
+                + hexsize(1)
+                + units("in"))
 
 tests = {
     "simple_1x1" : cr(1, 1) + DEFAULT_LAYERS,
