@@ -57,7 +57,7 @@ def verticesize(s):
     return ["--verticesize=%d" % s]
 
 def strokewidth(w):
-    return ['--strokewidth="%s"' % w]
+    return ['--strokewidth=%f' % w]
 
 def coordseparator(s):
     return ['--coordseparator="%s"' % s]
@@ -78,6 +78,7 @@ DEFAULTS = (ALL_LAYERS
                 + cr(4,4)
                 + verticesize(5)
                 + hexsize(1)
+                + strokewidth(1.0 / 25.4)
                 + units("in"))
 
 tests = {
