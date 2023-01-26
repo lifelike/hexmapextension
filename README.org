@@ -31,6 +31,8 @@ into the *extensions* folder (directory) of your
 Inkscape installation. In Linux this will typically be
 */usr/share/inkscape/extensions*
 or *~/.config/inkscape/extensions*.
+If Inkscape was installed on Linux from [[https://flathub.org/apps/details/org.inkscape.Inkscape][Flatpak]]
+the path is more likely *~/.var/app/org.inkscape.Inkscape/config/inkscape/extensions/*.
 In Windows it will be something like
 *C:\Program Files\Inkscape\share\extensions*. After (re)starting
 Inkscape you should now have *Boardgames* submenu in the
