@@ -37,12 +37,13 @@ def alphacol(c):
     r = c % 26
     return ('%c' % (r + 65)) * (int(d) + 1)
 
-def calc_hex_height(hex_width):
-    return 0.25 * hex_width / math.tan(math.pi / 6) * 2
-
 COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
 COORD_YOFFSET_PART = 75
 CENTERDOT_SIZE_FACTOR = 1.1690625
+
+# This is the ratio between the flat-to-flat size
+# of a hexagon vs the point-to-point size.
+HEX_RATIO = math.sqrt(3.0) / 2.0
 
 class HexmapEffect(inkex.Effect):
     def __init__(self):
@@ -303,12 +304,16 @@ class HexmapEffect(inkex.Effect):
         else:
             hex_rows = rows + 0.5
 
-        hex_width = width / hex_cols
-
+        # Size-calculation here assumes un-rotated grid with
+        # flat side up. If the grid is rotated the widths
+        # and heights will be swapped later in the code.
         if self.options.hexsize > 0:
-            hex_width = (self.svg.unittouu(str(self.options.hexsize)
+            hex_height = (self.svg.unittouu(str(self.options.hexsize)
                                                + self.options.units))
-        hex_height = calc_hex_height(hex_width)
+            hex_width = hex_height / HEX_RATIO
+        else:
+            hex_width = width / hex_cols
+            hex_height = hex_width * HEX_RATIO
 
         # square bricks workaround
         if bricks and squarebricks:
