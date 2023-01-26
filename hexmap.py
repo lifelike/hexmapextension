@@ -118,9 +118,7 @@ class HexmapEffect(inkex.Effect):
 
     def logwrite(self, msg):
         if self.options.generatelog:
-            log = open(self.options.logfilepath, 'w')
-            log.write(msg)
-            log.close()
+            self.log.write(msg)
 
     def svg_line(self, p1, p2):
         line = etree.Element('line')
@@ -205,6 +203,9 @@ class HexmapEffect(inkex.Effect):
                                             * self.verticesize))
 
     def effect(self):
+        if self.options.generatelog:
+            self.log = open(self.options.logfilepath, 'w')
+
         strokewidth = self.options.strokewidth
         cols = self.options.cols
         rows = self.options.rows
@@ -451,6 +452,9 @@ class HexmapEffect(inkex.Effect):
         self.append_if_new_name(parent, hexvertices)
         self.append_if_new_name(parent, hexcoords)
         self.append_if_new_name(parent, hexdots)
+
+        if self.options.generatelog:
+            self.log.close()
 
     def append_if_new_name(self, svg, layer):
         if layer is not None:
