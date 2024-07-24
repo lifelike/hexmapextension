@@ -11,9 +11,9 @@
                <option value="pt">pt</option>
                <option value="px">px</option>
             </param>
-            <param name="cols" type="int" gui-text="Columns" min="1" max="1000000">10</param>
-            <param name="rows" type="int" gui-text="Rows" min="1" max="1000000">10</param>
-            <param name="hexsize" type="float" min="0" max="9999" precision="2" gui-text="Hex Size (optional)" />
+            <param name="cols" type="int" gui-text="Columns" min="1" max="1000000">7</param>
+            <param name="rows" type="int" gui-text="Rows" min="1" max="1000000">7</param>
+            <param name="hexsize" type="float" min="0" max="9999" precision="2" gui-text="Hex Size (optional)">30</param>
             <param name="orientation" type="optiongroup" appearance="combo" gui-text="Hex Size Orientation">
                <option value="flattoflat">Flat to Flat</option>
                <option value="peektopeek">Peek to Peek</option>
