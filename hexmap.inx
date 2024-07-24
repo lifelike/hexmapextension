@@ -11,21 +11,27 @@
                <option value="pt">pt</option>
                <option value="px">px</option>
             </param>
-            <param name="cols" type="int" gui-text="Columns" min="1" max="1000000">10</param>
-            <param name="rows" type="int" gui-text="Rows" min="1" max="1000000">10</param>
-            <param name="hexsize" type="float" min="0" max="9999" gui-text="Hex Size (optional)" />
-            <param name="strokewidth" type="float" min="0.0" max="9999.0" gui-text="Stroke Width">1.0</param>
+            <param name="cols" type="int" gui-text="Columns" min="1" max="1000000">7</param>
+            <param name="rows" type="int" gui-text="Rows" min="1" max="1000000">7</param>
+            <param name="hexsize" type="float" min="0" max="9999" precision="2" gui-text="Hex Size (optional)">30</param>
+            <param name="orientation" type="optiongroup" appearance="combo" gui-text="Hex Size Orientation">
+               <option value="flattoflat">Flat to Flat</option>
+               <option value="peektopeek">Peek to Peek</option>
+            </param>
+            <param name="strokewidth" type="float" min="0.0" max="9999.0" precision="3" gui-text="Stroke Width">1.000</param>
             <param name="verticesize" type="float" min="0.0" max="50.0" gui-text="Size of vertices (%)">10.0</param>
         </page>
         <page name="page_2" gui-text="Style">
             <param name="bricks" type="bool" gui-text="Bricks">false</param>
             <param name="squarebricks" type="bool" gui-text="Force Square Bricks">false</param>
             <param name="rotate" type="bool" gui-text="Rotate">false</param>
-            <param name="halfhexes" type="bool" gui-text="Half hexes at top and bottom">false</param>
+            <param name="halfhexes" type="bool" gui-text="Half hexes at top and bottom">true</param>
             <param name="xshift" type="bool" gui-text="Shift grid to side and wrap">false</param>
             <param name="firstcoldown" type="bool" gui-text="First column half-hex down">false</param>
         </page>
         <page name="page_3" gui-text="Coords">
+            <param name="fontfamily" type="string" gui-text="Font Family">sans-serif</param>
+            <param name="fontsize" type="float" gui-text="Font Size" min="0" max="10000" precision="1">10.0</param>
             <param name="coordseparator" type="string" gui-text="Coordinate Separator">.</param>
             <param name="coordalphacol" type="bool" gui-text="Column Alpha Coordinates">false</param>
             <param name="coordrevrow" type="bool" gui-text="Row Coordinates Reversed">false</param>

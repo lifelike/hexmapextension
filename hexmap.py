@@ -37,7 +37,6 @@ def alphacol(c):
     r = c % 26
     return ('%c' % (r + 65)) * (int(d) + 1)
 
-COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
 COORD_YOFFSET_PART = 75
 CENTERDOT_SIZE_FACTOR = 1.1690625
 
@@ -59,6 +58,7 @@ class HexmapEffect(inkex.Effect):
         self.arg_parser.add_argument('--rows', type = int, default = '10',
                                          help = 'Number of columns')
         self.arg_parser.add_argument('--hexsize', type = float, default = 0.0)
+        self.arg_parser.add_argument('--orientation', default = 'flattoflat')
         self.arg_parser.add_argument('--strokewidth', type = float,
                                          default = 1.0)
         self.arg_parser.add_argument('--coordrows', type = int, default = '1')
@@ -72,6 +72,9 @@ class HexmapEffect(inkex.Effect):
                                          default = False)
         self.arg_parser.add_argument('--rotate', type = inkex.Boolean,
                                          default = False)
+        self.arg_parser.add_argument("--fontfamily", default='sans-serif')
+        self.arg_parser.add_argument('--fontsize', type = float,
+                                         default = 10.0)
         self.arg_parser.add_argument('--coordseparator', default = '')
         self.arg_parser.add_argument('--layersingroup', type = inkex.Boolean,
                                          default = False,
@@ -187,8 +190,8 @@ class HexmapEffect(inkex.Effect):
         text = etree.Element('text')
         text.set('x', str(p.x + self.xoffset))
         text.set('y', str(p.y + self.yoffset))
-        style = ('text-align:center;text-anchor:%s;font-size:%fpt'
-                 % (anchor, self.coordsize))
+        style = ('text-align:center;text-anchor:%s;font-family:"%s";font-size:%fpt;'
+                 % (anchor, self.options.fontfamily, self.options.fontsize / 3.78))
         text.set('style', style)
         text.text = coord
         return text
@@ -316,6 +319,10 @@ class HexmapEffect(inkex.Effect):
             hex_width = width / hex_cols
             hex_height = hex_width * HEX_RATIO
 
+        if self.options.orientation == 'peektopeek':
+            hex_width = hex_width * HEX_RATIO
+            hex_height = hex_height * HEX_RATIO
+
         # square bricks workaround
         if bricks and squarebricks:
             hex_height = hex_width
@@ -324,9 +331,6 @@ class HexmapEffect(inkex.Effect):
         hexes_height = hex_height * hex_rows
         hexes_width = hex_width * 0.75 * cols + hex_width * 0.25
 
-        self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
-        if self.coordsize > 1.0:
-            self.coordsize = round(self.coordsize)
         self.centerdotsize = self.stroke_width * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
@@ -358,7 +362,8 @@ class HexmapEffect(inkex.Effect):
                         anchor = 'start'
                     elif xshift and col == cols:
                         anchor = 'end'
-                    coord = self.svg_coord(cc, col, row, cols, rows, anchor)
+                    if not (halves and coldown and row == rows-1):
+                        coord = self.svg_coord(cc, col, row, cols, rows, anchor)
                     if coord != None:
                         hexcoords.append(coord)
                 if (hexdots is not None
