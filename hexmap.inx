@@ -25,7 +25,7 @@
             <param name="bricks" type="bool" gui-text="Bricks">false</param>
             <param name="squarebricks" type="bool" gui-text="Force Square Bricks">false</param>
             <param name="rotate" type="bool" gui-text="Rotate">false</param>
-            <param name="halfhexes" type="bool" gui-text="Half hexes at top and bottom">false</param>
+            <param name="halfhexes" type="bool" gui-text="Half hexes at top and bottom">true</param>
             <param name="xshift" type="bool" gui-text="Shift grid to side and wrap">false</param>
             <param name="firstcoldown" type="bool" gui-text="First column half-hex down">false</param>
         </page>
