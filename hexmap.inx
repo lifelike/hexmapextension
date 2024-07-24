@@ -30,6 +30,8 @@
             <param name="firstcoldown" type="bool" gui-text="First column half-hex down">false</param>
         </page>
         <page name="page_3" gui-text="Coords">
+            <param name="fontfamily" type="string" gui-text="Font Family">sans-serif</param>
+            <param name="fontsize" type="float" gui-text="Font Size" min="0" max="10000" precision="1">10.0</param>
             <param name="coordseparator" type="string" gui-text="Coordinate Separator">.</param>
             <param name="coordalphacol" type="bool" gui-text="Column Alpha Coordinates">false</param>
             <param name="coordrevrow" type="bool" gui-text="Row Coordinates Reversed">false</param>

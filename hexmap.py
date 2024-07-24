@@ -37,7 +37,6 @@ def alphacol(c):
     r = c % 26
     return ('%c' % (r + 65)) * (int(d) + 1)
 
-COORD_SIZE_PART_OF_HEX_HEIGHT = 0.1
 COORD_YOFFSET_PART = 75
 CENTERDOT_SIZE_FACTOR = 1.1690625
 
@@ -73,6 +72,9 @@ class HexmapEffect(inkex.Effect):
                                          default = False)
         self.arg_parser.add_argument('--rotate', type = inkex.Boolean,
                                          default = False)
+        self.arg_parser.add_argument("--fontfamily", default='sans-serif')
+        self.arg_parser.add_argument('--fontsize', type = float,
+                                         default = 10.0)
         self.arg_parser.add_argument('--coordseparator', default = '')
         self.arg_parser.add_argument('--layersingroup', type = inkex.Boolean,
                                          default = False,
@@ -188,8 +190,8 @@ class HexmapEffect(inkex.Effect):
         text = etree.Element('text')
         text.set('x', str(p.x + self.xoffset))
         text.set('y', str(p.y + self.yoffset))
-        style = ('text-align:center;text-anchor:%s;font-size:%fpt'
-                 % (anchor, self.coordsize))
+        style = ('text-align:center;text-anchor:%s;font-family:"%s";font-size:%fpt;'
+                 % (anchor, self.options.fontfamily, self.options.fontsize / 3.78))
         text.set('style', style)
         text.text = coord
         return text
@@ -329,9 +331,6 @@ class HexmapEffect(inkex.Effect):
         hexes_height = hex_height * hex_rows
         hexes_width = hex_width * 0.75 * cols + hex_width * 0.25
 
-        self.coordsize = hex_height * COORD_SIZE_PART_OF_HEX_HEIGHT
-        if self.coordsize > 1.0:
-            self.coordsize = round(self.coordsize)
         self.centerdotsize = self.stroke_width * CENTERDOT_SIZE_FACTOR
         self.circlesize = hex_height / 2
 
