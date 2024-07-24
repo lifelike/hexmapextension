@@ -362,7 +362,8 @@ class HexmapEffect(inkex.Effect):
                         anchor = 'start'
                     elif xshift and col == cols:
                         anchor = 'end'
-                    coord = self.svg_coord(cc, col, row, cols, rows, anchor)
+                    if not (halves and coldown and row == rows-1):
+                        coord = self.svg_coord(cc, col, row, cols, rows, anchor)
                     if coord != None:
                         hexcoords.append(coord)
                 if (hexdots is not None
