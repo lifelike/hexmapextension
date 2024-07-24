@@ -59,6 +59,7 @@ class HexmapEffect(inkex.Effect):
         self.arg_parser.add_argument('--rows', type = int, default = '10',
                                          help = 'Number of columns')
         self.arg_parser.add_argument('--hexsize', type = float, default = 0.0)
+        self.arg_parser.add_argument('--orientation', default = 'flattoflat')
         self.arg_parser.add_argument('--strokewidth', type = float,
                                          default = 1.0)
         self.arg_parser.add_argument('--coordrows', type = int, default = '1')
@@ -315,6 +316,10 @@ class HexmapEffect(inkex.Effect):
         else:
             hex_width = width / hex_cols
             hex_height = hex_width * HEX_RATIO
+
+        if self.options.orientation == 'peektopeek':
+            hex_width = hex_width * HEX_RATIO
+            hex_height = hex_height * HEX_RATIO
 
         # square bricks workaround
         if bricks and squarebricks:
