@@ -18,7 +18,7 @@
                <option value="flattoflat">Flat to Flat</option>
                <option value="peektopeek">Peek to Peek</option>
             </param>
-            <param name="strokewidth" type="float" min="0.0" max="9999.0" gui-text="Stroke Width">1.0</param>
+            <param name="strokewidth" type="float" min="0.0" max="9999.0" precision="3" gui-text="Stroke Width">1.000</param>
             <param name="verticesize" type="float" min="0.0" max="50.0" gui-text="Size of vertices (%)">10.0</param>
         </page>
         <page name="page_2" gui-text="Style">
