@@ -163,11 +163,16 @@ class HexmapEffect(inkex.Effect):
             col = cols - col
         else:
             col = col + 1
-        row = row + self.options.coordrowstart - 1
-        col = col + self.options.coordcolstart - 1
-        if ((row != 1 and row % self.coordrows != 0)
-             or row < 1 or col < 1):
-             return None
+        # Apply configured start offsets (allow start values of 0)
+        start_row = int(self.options.coordrowstart)
+        start_col = int(self.options.coordcolstart)
+        row = row + start_row - 1
+        col = col + start_col - 1
+
+        # Only create coordinates that are within the configured start
+        # and follow the coordrows stepping. This permits start values of 0.
+        if ((row - start_row) % self.coordrows != 0) or row < start_row or col < start_col:
+            return None
 
         if self.coordrowfirst:
              col,row = [row,col]
